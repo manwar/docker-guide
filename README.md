@@ -53,7 +53,7 @@ Docker containers take seconds to start as VM take minutes
 VM is compatible with all OS i.e. of Windows host OS, we can Linux guest OS and MacOS
 Docker is only compatible with Linux distros
 
-Docker Desktop
+### Docker Desktop
 
 It allows to run Linux containers on Windows or MacOS.
 It uses a Hypervisor layer with a lightweight Linux distro.
@@ -70,38 +70,38 @@ It worked like a charm for me.
 
 #### Step 1: Update the system
 
-	$ sudo apt update && sudo apt upgrade -y
+    $ sudo apt update && sudo apt upgrade -y
 	
 #### Step 2: Install dependencies
 
-	$ sudo apt install -y apt-transport-https ca-certificates curl software-properties-common
+    $ sudo apt install -y apt-transport-https ca-certificates curl software-properties-common
 	
 #### Step 3: Add Docker GPG Key
 
-	$ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+    $ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
 	
 #### Step 4: Add the Docker Repository
 
-	$ echo "deb [signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+    $ echo "deb [signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 	
 #### Step 5: Install Docker Engine	
 
-	$ sudo apt update
-	$ sudo apt install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+    $ sudo apt update
+    $ sudo apt install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 	
-#### Step 6: Add you user to Docker Group
+#### Step 6: Add yourself to Docker Group
 
-	Add your user to the Docker group to avoid the need to use sudo on every Docker command:
+Add your user to the Docker group to avoid the need to use sudo on every Docker command:
 
-	$ sudo usermod -aG docker $USER
+    $ sudo usermod -aG docker $USER
 	
 #### Step 7: Restart WSL via the Windows command line (Powershell).
 
-	> wsl --shutdown	
+    > wsl --shutdown	
 	
 #### Step 8: Access Ubuntu again. Check if Docker was installed correctly on the Ubuntu terminal:
 
-	  $ docker --version
+    $ docker --version
     Docker version 28.0.1, build 068a01e
 
 ### Docker Images vs Docker Containers
@@ -142,32 +142,33 @@ Every docker images comes with tag i.e. version.
 
 To download a docker image, use the command `docker pull {name}:{tag}`
 
-    $ docker pull nginx:1.23
+    $ docker pull nginx:1.27
 
 Now if we list docker images, we should have one.
 
     $ docker images
-    REPOSITORY  TAG    IMAGE ID    CREATED      SIZE
-    nginx       1.23   ab8992sss   5 days ago   145MB
+    REPOSITORY   TAG       IMAGE ID       CREATED       SIZE
+    nginx        1.27      b52e0b094bc0   4 weeks ago   192MB
 
 If we don't mention the tag when pulling docker image then it would download the latest.
 
-    $ docker pull nginx:1.23
+    $ docker pull nginx
     $ docker images
-    REPOSITORY  TAG    IMAGE ID    CREATED      SIZE
-    nginx       1.23   ab8992sss   5 days ago   145MB
-    nginx       latest ab8992sss   5 days ago   145MB
+    REPOSITORY   TAG       IMAGE ID       CREATED       SIZE
+    nginx        1.27      b52e0b094bc0   4 weeks ago   192MB
+    nginx        latest    b52e0b094bc0   4 weeks ago   192MB
 
 How how do we run the image and create a container?
 
-    $ docker run nginx:1.23
+    $ docker run nginx:1.27
 
 We have a container running now.
 
 Open up a new terminal and type the command below:
 
     $ docker ps
-    TUS                 PORTS        NAMES
+    CONTAINER ID   IMAGE        COMMAND                  CREATED          STATUS          PORTS     NAMES
+    518dddf21a2d   nginx:1.27   "/docker-entrypoint.…"   13 seconds ago   Up 12 seconds   80/tcp    kind_grothendieck
 
     
 
