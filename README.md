@@ -280,10 +280,14 @@ To remove the container:
 
      $ docker rm bf4e2dc18a60
 
-To stop containers:
+To stop all containers:
 
      $ docker stop $(docker ps -q)
 
 To remove all containers:
 
      $ docker rm $(docker ps -a -q)
+
+You can even start the container that we stopped earlier, rather than creating a new.
+
+     $ docker start bf4e2dc18a60
