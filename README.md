@@ -62,7 +62,49 @@ It uses a Hypervisor layer with a lightweight Linux distro.
 
 You can download the docker from the official website and follow the instructions of your OS.
 
-Docker Images vs Docker Containers
+For me, I am running Ubuntu 24.04 LTS in WSL2.
+
+I found this [**installation guide**](https://gist.github.com/dehsilvadeveloper/c3bdf0f4cdcc5c177e2fe9be671820c7) very handy.
+
+It worked like a charm for me.
+
+#### Step 1: Update the system
+
+	$ sudo apt update && sudo apt upgrade -y
+	
+#### Step 2: Install dependencies
+
+	$ sudo apt install -y apt-transport-https ca-certificates curl software-properties-common
+	
+#### Step 3: Add Docker GPG Key
+
+	$ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+	
+#### Step 4: Add the Docker Repository
+
+	$ echo "deb [signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+	
+#### Step 5: Install Docker Engine	
+
+	$ sudo apt update
+	$ sudo apt install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+	
+#### Step 6: Add you user to Docker Group
+
+	Add your user to the Docker group to avoid the need to use sudo on every Docker command:
+
+	$ sudo usermod -aG docker $USER
+	
+#### Step 7: Restart WSL via the Windows command line (Powershell).
+
+	> wsl --shutdown	
+	
+#### Step 8: Access Ubuntu again. Check if Docker was installed correctly on the Ubuntu terminal:
+
+	  $ docker --version
+    Docker version 28.0.1, build 068a01e
+
+### Docker Images vs Docker Containers
 
 Docker image is an executable application artifact. It includes app source code but also complete environment configutation. 
 We can add environment variables, create directories, files etc.
@@ -75,10 +117,14 @@ From one docker image, we can run multiple containers.
 To list docker images:
 
     $ docker images
+    REPOSITORY   TAG       IMAGE ID   CREATED   SIZE
+    $
 
 To list docker containers:
 
     $ docker ps
+    CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+    $ 
 
  ### Docker Registry
 
