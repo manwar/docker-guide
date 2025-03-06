@@ -199,6 +199,13 @@ If you want to inspect the docker log then you use command `docker logs <contain
 
     $ docker logs 3f35dc78986b	
 
+We can run the container without manually pulling the docker image.
+
+Below we want to run `nginx 1.23`, which we don't have it locally.
+
+It will look up locally first and when it can't find then it would go and pull it for you.
+
+    $ docker run -d nginx:1.23
 
 
 
