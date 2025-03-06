@@ -214,9 +214,24 @@ Now if we check the containers, we see two containers running.
     beb858459a56   nginx:1.23   "/docker-entrypoint.…"   3 seconds ago    Up 2 seconds    80/tcp    stoic_lumiere
     3f35dc78986b   nginx:1.27   "/docker-entrypoint.…"   55 minutes ago   Up 55 minutes   80/tcp    vigorous_elbakyan
 
+### Container Port vs Host Port
 
+Application inside the container runs in an isolated Docker network.
  
+This allows us to run the same app running on the same port multiple times.
 
+We need to expose the container port to the host.
+
+#### Port Binding
+
+     Bind the container's port to the host's port to make the service
+     available to the outside world.
+
+Every application runs on specific port e.g. nginx runs on port 80, redis runs on port 6379.
+
+You can get this information when you type `docker ps` command.
+
+If we try to reach port 80 outside the container as in the browser `http://localhost` then you would get error `The site can't be reached`
 
 
 
