@@ -345,14 +345,18 @@ Run the container:
 
 We can create an image as above but this time using `docker-compose`.
 
+For this we would need to install `docker-compose`:
+
+    $ sudo apt install docker-compose
+
 Create a file `docker-compose.yml`
 
     version: '3.8'
 
     services:
-       my-python-app:
-         build: .
-         container_name: my-python-app-container
+      my-python-app:
+        build: .
+        container_name: my-python-app-container
 
 The `version: '3.8'`, specifies the version of the Docker Compose file format.
 
