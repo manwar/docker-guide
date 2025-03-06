@@ -190,7 +190,7 @@ Now run the below command, no container is running now:
 To avoid the docker log blocking the terminal, we can run the container and detach as well.
 
     $ docker run -d nginx:1.27
-    sdfsfsdfsdfsdfsdf
+    3f35dc78986b4c1fe172005b3cc650e978804131d71706ce30609ff02e7457cf
     $ docker ps
     CONTAINER ID   IMAGE        COMMAND                  CREATED          STATUS          PORTS     NAMES
     518dddf21a2d   nginx:1.27   "/docker-entrypoint.…"   13 seconds ago   Up 12 seconds   80/tcp    kind_grothendieck
