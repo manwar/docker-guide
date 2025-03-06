@@ -193,11 +193,11 @@ To avoid the docker log blocking the terminal, we can run the container and deta
     3f35dc78986b4c1fe172005b3cc650e978804131d71706ce30609ff02e7457cf
     $ docker ps
     CONTAINER ID   IMAGE        COMMAND                  CREATED          STATUS          PORTS     NAMES
-    518dddf21a2d   nginx:1.27   "/docker-entrypoint.…"   13 seconds ago   Up 12 seconds   80/tcp    kind_grothendieck
+    3f35dc78986b   nginx:1.27   "/docker-entrypoint.…"   13 seconds ago   Up 12 seconds   80/tcp    kind_grothendieck
 
-If you want to inspect the docker log then you use command `docker log <container_id>`.
+If you want to inspect the docker log then you use command `docker logs <container_id>`.
 
-
+    $ docker logs 3f35dc78986b	
 
 
 
