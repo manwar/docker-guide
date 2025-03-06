@@ -342,3 +342,32 @@ Build the image:
 Run the container:
 
     $ docker run my-python-app
+
+We can create an image as above but this time using `docker-compose`.
+
+Create a file `docker-compose.yml`
+
+    version: '3.8'
+
+    services:
+       my-python-app:
+         build: .
+         container_name: my-python-app-container
+
+The `version: '3.8'`, specifies the version of the Docker Compose file format.
+
+The `services:`, defines the services that will be run.
+
+`my-python-app`, the name of the service.
+
+`build: .`, tells Docker Compose to build the Docker image using the Dockerfile in the current directory.
+
+`container_name: my-python-app-container`, specifies the name of the container.
+
+Now build and run the container:
+
+    $ docker-compose up
+
+Stop the container:
+
+    $ docker-compose down
