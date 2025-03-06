@@ -251,3 +251,31 @@ Check the container status
     $
 
 Check in the browser if you can access the nginx: `http://localhost:9000`
+
+You can check the containers log:
+
+    $ docker logs bf4e2dc18a60
+
+Generally it is advisable to port bind the same port. 
+
+    $ docker stop bf4e2dc18a60
+    $ docker run -d -p 80:80 nginx:1.27
+    bf4e2dc18a602ecc067a72e1ea076068deb26e0d4000c506a41d6aeb0047dba1
+    $ docker ps
+    CONTAINER ID   IMAGE        COMMAND                  CREATED         STATUS         PORTS                                   NAMES
+    bf4e2dc18a60   nginx:1.27   "/docker-entrypoint.…"   2 seconds ago   Up 2 seconds   0.0.0.0:80->80/tcp, [::]:9000->80/tcp   reverent_ellis
+    $
+
+**NOTE**
+
+Docker run command creates a new container everytime and doesn't re-use the previous container.
+
+We have executed `docker run`  multiple times but when we do `docker ps`  it only shows one. 
+
+However those containers still exist.
+
+     $ docker ps -a
+
+
+
+
