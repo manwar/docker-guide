@@ -319,19 +319,18 @@ Let's build a simple `Hello World` program in `Python`.
 
 We would create `app.py`
 
-    # app.py
     print("Hello, World!")
 
 Now we create another file `Dockerfile` as below:
 
     # Use an official Python runtime as a parent image
-    FROM python:3.9-slim
+    FROM python:3.14-rc-bookworm
 
     # Set the working directory in the container
     WORKDIR /app
 
     # Copy the current directory contents into the container at /app
-    COPY . /app
+    COPY app.py /app
 
     # Run app.py when the container launches
     CMD ["python", "app.py"]
