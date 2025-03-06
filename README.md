@@ -231,8 +231,17 @@ Every application runs on specific port e.g. nginx runs on port 80, redis runs o
 
 You can get this information when you type `docker ps` command.
 
-If we try to reach port 80 outside the container as in the browser `http://localhost` then you would get error `The site can't be reached`
+If we try to reach port 80 outside the container as in the browser `https://localhost:80` then you would get error `The site can't be reached`
 
+Let's stop the container first:
 
+    $ docker stop 3f35dc78986b
 
+Now we would run the container with port binding like below:
+
+    $ docker run -d -p 9000:80 nginx:1.27
+
+Check the container status
+
+    $ docker ps
 
