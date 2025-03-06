@@ -299,4 +299,47 @@ You can give a name to a container:
     CONTAINER ID   IMAGE        COMMAND                  CREATED         STATUS         PORTS                                     NAMES
     5058136e20a2   nginx:1.27   "/docker-entrypoint.…"   4 seconds ago   Up 4 seconds   0.0.0.0:9000->80/tcp, [::]:9000->80/tcp   nginx-1
 
-    
+### Registry vs Repository
+
+Docker Registry is a service providing storage and can be hosted by a third party like AWS or by yourself. 
+
+It is also a collection of repositories.
+
+Docker Repository is collection of related images with the same name but different versions.
+
+`Docker Hub` is a registry.
+
+On Docker Hub, you can have private or public repositories for your application.
+
+### Create docker image
+
+`Dockerfile` can be used to create docker image.
+
+Let's build a simple `Hello World` program in `Python`.
+
+We would create `app.py`
+
+    # app.py
+    print("Hello, World!")
+
+Now we create another file `Dockerfile` as below:
+
+    # Use an official Python runtime as a parent image
+    FROM python:3.9-slim
+
+    # Set the working directory in the container
+    WORKDIR /app
+
+    # Copy the current directory contents into the container at /app
+    COPY . /app
+
+    # Run app.py when the container launches
+    CMD ["python", "app.py"]
+
+Build the image:
+
+    $ docker build -t my-python-app .
+
+Run the container:
+
+    $ docker run my-python-app
