@@ -276,6 +276,14 @@ However those containers still exist.
 
      $ docker ps -a
 
+To remove the container:
 
+     $ docker rm bf4e2dc18a60
 
+To stop containers:
 
+     $ docker stop $(docker ps -q)
+
+To remove all containers:
+
+     $ docker rm $(docker ps -a -q)
