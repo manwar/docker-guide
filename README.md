@@ -207,8 +207,12 @@ It will look up locally first and when it can't find then it would go and pull i
 
     $ docker run -d nginx:1.23
 
+Now if we check the containers, we see two containers running.
 
-
+    $ docker ps
+    CONTAINER ID   IMAGE        COMMAND                  CREATED          STATUS          PORTS     NAMES
+    beb858459a56   nginx:1.23   "/docker-entrypoint.…"   3 seconds ago    Up 2 seconds    80/tcp    stoic_lumiere
+    3f35dc78986b   nginx:1.27   "/docker-entrypoint.…"   55 minutes ago   Up 55 minutes   80/tcp    vigorous_elbakyan
 
 
  
