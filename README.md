@@ -41,16 +41,23 @@ VM is also a virtualization tool but they differ in what part of OS do they virt
 
 Docker virtualize the OS Application Layer.
 
-A docker contains OS application layer. Also services and apps installed on top of that layer. It uses the kernel of the host as it doesn't have it's own kernel.
+A docker contains OS application layer. Also services and apps installed on top of that layer. 
 
-A virtual machine contains OS application layer and OS kernel. It doesn't use host kernel, instead it uses it's own kernel.
+It uses the kernel of the host as it doesn't have it's own kernel.
+
+A virtual machine contains OS application layer and OS kernel. 
+
+It doesn't use host kernel, instead it uses it's own kernel.
 
     VM1: App A, Guest OS 1
     VM2: App B, Guest OS 2
 
 Docker images are much smaller as it doesn't have its own kernel
+
 Docker containers take seconds to start as VM take minutes
+
 VM is compatible with all OS i.e. of Windows host OS, we can Linux guest OS and MacOS
+
 Docker is only compatible with Linux distros
 
 ### Docker Desktop
@@ -170,8 +177,23 @@ Open up a new terminal and type the command below:
     CONTAINER ID   IMAGE        COMMAND                  CREATED          STATUS          PORTS     NAMES
     518dddf21a2d   nginx:1.27   "/docker-entrypoint.…"   13 seconds ago   Up 12 seconds   80/tcp    kind_grothendieck
 
-    
+In the other terminal where we ran the command `docker run nginx:127`, container logs still blocking the control.
 
+Let's cancel the run `CTRL + c`.
+
+Now run the below command, no container is running now:
+
+    $ docker ps
+    CONTAINER ID   IMAGE        COMMAND                  CREATED          STATUS          PORTS     NAMES
+    $	
+
+To avoid the docker log blocking the terminal, we can run the container and detach as well.
+
+    $ docker run -d nginx:1.27
+    sdfsfsdfsdfsdfsdf
+    $ docker ps
+    CONTAINER ID   IMAGE        COMMAND                  CREATED          STATUS          PORTS     NAMES
+    518dddf21a2d   nginx:1.27   "/docker-entrypoint.…"   13 seconds ago   Up 12 seconds   80/tcp    kind_grothendieck
 
 
 
