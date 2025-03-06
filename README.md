@@ -291,3 +291,12 @@ To remove all containers:
 You can even start the container that we stopped earlier, rather than creating a new.
 
      $ docker start bf4e2dc18a60
+
+You can give a name to a container:
+
+    $ docker run --name nginx-1 -d -p 9000:80 nginx:1.27
+    $ docker ps
+    CONTAINER ID   IMAGE        COMMAND                  CREATED         STATUS         PORTS                                     NAMES
+    5058136e20a2   nginx:1.27   "/docker-entrypoint.…"   4 seconds ago   Up 4 seconds   0.0.0.0:9000->80/tcp, [::]:9000->80/tcp   nginx-1
+
+    
