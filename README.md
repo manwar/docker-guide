@@ -539,9 +539,7 @@ You can also configure the dependency in the docker compose file like below:
         depends_on:
           - "mongodb"
 
-Open the `Mongo Express` application in the brower: `http://localhost:8081`. 
-
-
+Open the `Mongo Express` application in the browser: `http://localhost:8081`. 
 
 Then create a database `my-db` and inside the database, create a collection `my-collection`.
 
@@ -687,7 +685,7 @@ Now start the containers again
 
     $ docker-compose -f docker-compose.yaml -p project start
 
-There is even better way to use secrets in docker compose without having to use environment variables.
+There is even a better way to use secrets in docker compose without having to use environment variables.
 
 We would create a text file `docker-compose.env` like below:
 
@@ -731,7 +729,7 @@ You can reference the `docker-compose.env` file like this:
 
     $ docker-compose --env-file docker-compose.env -f docker-compose.yaml -d up
 
-There is another alternative i.e. `Docker Secrets`.
+There is another alternative to hide sensitive data i.e. `Docker Secrets`.
 
 The docker secrets works in `swarm mode`.
 
