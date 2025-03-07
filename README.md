@@ -60,6 +60,26 @@ VM is compatible with all OS i.e. of Windows host OS, we can Linux guest OS and 
 
 Docker is only compatible with Linux distros
 
+##### Virtual Machine
+
+    - Hardware
+    - Host OS e.g. Ubuntu    
+    - Hypervisor e.g VMWare
+      - Ubuntu (VM)
+      - CentOS (VM)
+      - Debian (VM)
+
+##### Docker
+
+    - Hardware
+    - Host OS e.g. Ubuntu
+    - Docker Engine
+      - Ubuntu (Docker Image)
+      - CentOS (Docker Image)
+      - Debian (Docker Image)
+
+The docker container is like a micro computer havin
+
 ### Docker Desktop
 
 It allows to run Linux containers on Windows or MacOS.
@@ -530,3 +550,14 @@ Remove a network
 Remove all unused networks
 
     $ docker network prune
+
+
+### RESOURCES
+***
+
+[**What is Docker?**](https://www.youtube.com/watch?v=H8Lyj2D_cWo)
+
+[**Docker Tutorial for beginners - Complete One Shot**](https://www.youtube.com/watch?v=exmSJpJvIPs)
+
+[**Docker Containers 101**](https://www.youtube.com/watch?v=eGz9DS-aIeY)
+
