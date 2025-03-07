@@ -56,9 +56,9 @@ Docker images are much smaller as it doesn't have its own kernel
 
 Docker containers take seconds to start as VM take minutes
 
-VM is compatible with all OS i.e. of Windows host OS, we can Linux guest OS and MacOS
+VM is compatible with all `OS` i.e. on `Windows` host operating systems, we can have guest operating system as `Linux` and `MacOS`.
 
-Docker is only compatible with Linux distros
+`Docker` is only compatible with `Linux` distros.
 
 ##### Virtual Machine
 
@@ -78,18 +78,19 @@ Docker is only compatible with Linux distros
       - CentOS (Docker Image)
       - Debian (Docker Image)
 
-The docker container is like a micro computer havin
+The docker container is like a micro computer.
 
 ### Docker Desktop
 
-It allows to run Linux containers on Windows or MacOS.
-It uses a Hypervisor layer with a lightweight Linux distro.
+It allows to run `Linux` containers on `Windows` or `MacOS`.
+
+It uses a `Hypervisor` layer with a lightweight `Linux` distro.
 
 ### Install Docker
 
-You can download the docker from the official website and follow the instructions of your OS.
+You can download the docker from the official website and follow the instructions for your OS.
 
-For me, I am running Ubuntu 24.04 LTS in WSL2.
+For me, I am running `Ubuntu 24.04 LTS` in `WSL2`.
 
 I found this [**installation guide**](https://gist.github.com/dehsilvadeveloper/c3bdf0f4cdcc5c177e2fe9be671820c7) very handy.
 
@@ -134,9 +135,11 @@ Add your user to the Docker group to avoid the need to use sudo on every Docker 
 ### Docker Images vs Docker Containers
 
 Docker image is an executable application artifact. It includes app source code but also complete environment configutation. 
+
 We can add environment variables, create directories, files etc.
 
 Once docker image is downloaded and run. It starts the application. 
+
 The running instance of an image is called Docker container.
 
 From one docker image, we can run multiple containers.
@@ -145,13 +148,11 @@ To list docker images:
 
     $ docker images
     REPOSITORY   TAG       IMAGE ID   CREATED   SIZE
-    $
 
 To list docker containers:
 
     $ docker ps
     CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
-    $ 
 
  ### Docker Registry
 
@@ -205,7 +206,6 @@ Now run the below command, no container is running now:
 
     $ docker ps
     CONTAINER ID   IMAGE        COMMAND                  CREATED          STATUS          PORTS     NAMES
-    $	
 
 To avoid the docker log blocking the terminal, we can run the container and detach as well.
 
@@ -265,10 +265,11 @@ Check the container status
 
     $ docker run -d -p 9000:80 nginx:1.27
     bf4e2dc18a602ecc067a72e1ea076068deb26e0d4000c506a41d6aeb0047dba1
+
     $ docker ps
     CONTAINER ID   IMAGE        COMMAND                  CREATED         STATUS         PORTS                                     NAMES
     bf4e2dc18a60   nginx:1.27   "/docker-entrypoint.…"   2 seconds ago   Up 2 seconds   0.0.0.0:9000->80/tcp, [::]:9000->80/tcp   reverent_ellis
-    $
+
 
 Check in the browser if you can access the nginx: `http://localhost:9000`
 
@@ -279,12 +280,13 @@ You can check the containers log:
 Generally it is advisable to port bind the same port. 
 
     $ docker stop bf4e2dc18a60
+
     $ docker run -d -p 80:80 nginx:1.27
     bf4e2dc18a602ecc067a72e1ea076068deb26e0d4000c506a41d6aeb0047dba1
+
     $ docker ps
     CONTAINER ID   IMAGE        COMMAND                  CREATED         STATUS         PORTS                                   NAMES
     bf4e2dc18a60   nginx:1.27   "/docker-entrypoint.…"   2 seconds ago   Up 2 seconds   0.0.0.0:80->80/tcp, [::]:9000->80/tcp   reverent_ellis
-    $
 
 **NOTE**
 
@@ -315,6 +317,7 @@ You can even start the container that we stopped earlier, rather than creating a
 You can give a name to a container:
 
     $ docker run --name nginx-1 -d -p 9000:80 nginx:1.27
+
     $ docker ps
     CONTAINER ID   IMAGE        COMMAND                  CREATED         STATUS         PORTS                                     NAMES
     5058136e20a2   nginx:1.27   "/docker-entrypoint.…"   4 seconds ago   Up 4 seconds   0.0.0.0:9000->80/tcp, [::]:9000->80/tcp   nginx-1
@@ -405,6 +408,7 @@ Without docker-compose, you start 2 docker containers
 1) Create a docker network
 
        $ docker network create mongo-network
+
        $ docker network ls
 
 2) Start MongoDB container
@@ -416,6 +420,7 @@ Without docker-compose, you start 2 docker containers
          --network mongo-network \
          --name mongodb \
          mongo
+
        $ docker ps
 
 3) Start Mongo Express Container
@@ -428,6 +433,7 @@ Without docker-compose, you start 2 docker containers
          --network mongo-network \
          --name mongo-express \
          mongo-express
+
        $ docker ps
 
 Open browser and visit `http://localhost:8081`
@@ -483,7 +489,9 @@ So if the above `docker-compose.yaml` is in the folder `project` then it would c
 Now stop all containers first and then remove.
 
     $ docker stop mongodb mongo-express
+
     $ docker rm mongodb mongo-express
+
     $ docker network rm mongo-network
 
 Check network afterwards:
@@ -560,6 +568,7 @@ However if you stop the container and start again, you still have all the change
 So you would do something like below:
 
     $ docker-compose -f docker-compose.yaml start -d
+
     $ docker-compose -f docker-compose.yaml stop
 
 Let's add a document in the collection `my-collection` we created above in the database `my-db`.
@@ -671,6 +680,7 @@ To test the changes, first stop the containers:
 In the terminal, we can define the environment variables like below:
 
     $ export MONGO_ADMIN_USER=admin
+
     $ export MONGO_ADMIN_PASS=supersecret
 
 Now start the containers again
@@ -880,7 +890,6 @@ Once we have pushed the image, we can use it in the configuration file as below:
           ME_CONFIG_MONGODB_SERVER=mongodb
         depends_on:
           - "mongodb"
-
 
 ### Commands
 
