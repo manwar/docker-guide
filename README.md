@@ -471,7 +471,14 @@ Here is the `docker-compose.yaml` file:
 
 Missing network name in the configuration?
 
-Well, `docker-compose` sets up a single network for the application.
+Well, `docker-compose` sets up a single network for the application by default.
+
+It also gives container name in format: `<folder_name>-<image_name>-1` by default.
+
+So if the above `docker-compose.yaml` is in the folder `project` then it would create two containers as below:
+
+    project-mongodb-1
+    project-mongo-express-1
 
 Now stop all containers first and then remove.
 
@@ -525,6 +532,8 @@ You can also configure the dependency in the docker compose file like below:
           - "mongodb"
 
 Open the `Mongo Express` application in the brower: `http://localhost:8081`. 
+
+
 
 Then create a database `my-db` and inside the database, create a collection `my-collection`.
 
@@ -604,11 +613,103 @@ We are building image as we don't have image for JS application using the `Docke
         depends_on:
           - "mongodb"
 
+Since we moved the `docker-compose.yaml` file to the clone repository, the `docker-compose` would now create container name differently.
+
 First stop all containers:
 
-    $ docker-compose -f docker-compose.yaml stop
-    $ docker-compose -f docker-compose.yaml up -d
+    $ docker-compose -f docker-compose.yaml down
 
+Check all containers:
+
+    $ docker ps -a
+
+In order to use the existing container, we can override the project name,
+  
+    $ docker-compose --project-name project -f docker-compose.yaml up -d
+
+This wouldn't create new containers but re-use the same container created earlier.
+
+You can access the `JS` application: `http://localhost:3000`
+
+**NOTE:** It is not recommended to hardcode sensitive data in the docker compose configuration file.
+
+To solve the problem, we can create `docker variables` as environment variables as below:
+
+    version: '3.8'
+    services:
+      my-app:
+        build: .
+        ports:
+          - 3000:3000
+        environment:
+          MONGO_DB_USERNAME=${MONGO_ADMIN_USER}
+          MONGO_DB_PWD=${MONGO_ADMIN_PASS}
+
+      mongodb:
+        image: mongo
+        ports:
+          - 27017:27017
+        environment:
+          MONGO_INITDB_ROOT_USERNAME=${MONGO_ADMIN_USER}
+          MONGO_INITDB_ROOT_PASSWORD=${MONGO_ADMIN_PASS}
+
+      mongo-express:
+        image: mongo-express
+        ports:
+          - 8081:8081
+        environment:
+          ME_CONFIG_MONGODB_ADMINUSERNAME=${MONGO_ADMIN_USER}
+          ME_CONFIG_MONGODB_ADMINPASSWORD=${MONGO_ADMIN_PASS}
+          ME_CONFIG_MONGODB_SERVER=mongodb
+        depends_on:
+          - "mongodb"
+
+To test the changes, first stop the containers:
+
+    $ docker-compose -f docker-compose.yaml -p project stop
+
+In the terminal, we can define the environment variables like below:
+
+    $ export MONGO_ADMIN_USER=admin
+    $ export MONGO_ADMIN_PASS=supersecret
+
+Now start the containers again
+
+    $ docker-compose -f docker-compose.yaml -p project start
+
+There is even better way to use secrets in docker compose without having to use environment variables.
+
+In the configuration file, we can create top-level `secrets` element and reference the secret in the `secrets` attribute in the `services` like below:
+
+    version: '3.8'
+    secrets:
+      my_secret:
+        file: ./my_secret.txt
+    services:
+      my-app:
+        build: .
+        ports:
+          - 3000:3000
+        secrets:
+          - my_secret
+
+      mongodb:
+        image: mongo
+        ports:
+          - 27017:27017
+        secrets:
+          - my_secret
+
+      mongo-express:
+        image: mongo-express
+        ports:
+          - 8081:8081
+        secrets:
+          - my_secret
+	environment:
+          ME_CONFIG_MONGODB_SERVER=mongodb
+        depends_on:
+          - "mongodb"
 
 
 
