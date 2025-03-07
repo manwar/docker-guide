@@ -396,6 +396,224 @@ Stop the container:
 
     $ docker-compose down
 
+### Docker Compose
+
+It's a tool for defining and running multi-container Docker applications.
+
+Without docker-compose, you start 2 docker containers
+
+1) Create a docker network
+
+    $ docker network create mongo-network
+    $ docker network ls
+
+2) Start MongoDB container
+
+    $ docker run -d \
+      -p 27017:27017 \
+      -e MONGO_INITDB_ROOT_USERNAME=admin \
+      -e MONGO_INITDB_ROOT_PASSWORD=supersecret \
+      --network mongo-network \
+      --name mongodb
+      mongo
+    $ docker ps
+
+3) Start Mongo Express Container
+
+    $ docker run -d \
+      -p 8081:8081 \
+      -e ME_CONFIG_MONGODB_ADMINUSERNAME=admin \
+      -e ME_CONFIG_MONGODB_ADMINPASSWORD=supersecret \
+      -e ME_CONFIG_MONGODB_SERVER=mongodb \
+      --network mongo-network \
+      --name mongo-express
+      mongo-express
+    $ docker ps
+
+Open browser and visit `http://localhost:8081`
+
+Get the credentials `admin:pass` from docker logs
+
+    $ docker logs mongo-express
+
+As we see, we have 2 containers i.e. Mongo Express dependent on MongoDB.
+
+In the above example, we run 2 containers on the same docker network. 
+
+It works just fine, if you have 2-3 containers.
+
+With `docker-compose`, we create a single `YAML` configuration file for all application services.
+
+Also you create and start all the services with a single command.
+
+Let's convert docker commands to docker compose configuration.
+
+Here is the `docker-compose.yaml` file:
+
+    version: '3.8'
+    services:
+      mongodb:
+        image: mongo
+	ports:
+          - 27017:27017
+	environment:
+          MONGO_INITDB_ROOT_USERNAME=admin
+          MONGO_INITDB_ROOT_PASSWORD=supersecret
+
+      mongo-express:
+        image: mongo-express
+	ports:
+          - 8081:8081
+	environment:
+          ME_CONFIG_MONGODB_ADMINUSERNAME=admin
+          ME_CONFIG_MONGODB_ADMINPASSWORD=supersecret
+          ME_CONFIG_MONGODB_SERVER=mongodb
+
+Missing network name in the configuration?
+
+Well, `docker-compose` sets up a single network for the application.
+
+Now stop all containers first and then remove.
+
+    $ docker stop mongodb mongo-express
+    $ docker rm mongodb mongo-express
+    $ docker network rm mongo-network
+
+Check network afterwards:
+
+    $ docker network ls
+
+Check no container running:
+
+    $ docker ps
+
+Now start the containers:
+
+    $ docker-compose -f docker-compose.yaml up
+
+If you want to see the default network created by `docker-compose` then do this:
+
+    $ docker network ls
+
+Check the containers, you should see 2 in the list.
+
+    $ docker ps
+
+You will notice one thing, that logs of both containers are mixed up.
+
+You can also configure the dependency in the docker compose file like below:
+
+    version: '3.8'
+    services:
+      mongodb:
+        image: mongo
+	ports:
+          - 27017:27017
+	environment:
+          MONGO_INITDB_ROOT_USERNAME=admin
+          MONGO_INITDB_ROOT_PASSWORD=supersecret
+
+      mongo-express:
+        image: mongo-express
+	ports:
+          - 8081:8081
+	environment:
+          ME_CONFIG_MONGODB_ADMINUSERNAME=admin
+          ME_CONFIG_MONGODB_ADMINPASSWORD=supersecret
+          ME_CONFIG_MONGODB_SERVER=mongodb
+        depends_on:
+	  - "mongodb"
+
+Go to the browser in `Mongo Express` application. create a database and inside create a collection.
+
+You should check the log showing all activities.
+
+If you want to run docker compose in `detach` mode, do this:
+
+    $ docker-compose -f docker-compose.yaml up -d
+
+To shutdown all services, do this:
+
+    $ docker-compose -f docker-compose.yaml down
+
+If you noticed, it not only stopped the containers but also removed it too.
+
+It also removed the network as well.
+
+    $ docker ps -a
+
+**NOTE:** If you remove the container, you loose all the changes done in the container. By default, no persistence happens.
+
+However if you stop the container and start again, you still have all the changes.
+
+So you would do something like below:
+
+Did you notice `start` and not `up` to start the container?
+
+Also `stop` and NOT `down` to stop the container?
+
+    $ docker-compose -f docker-compose.yaml start -d
+    $ docker-compose -f docker-compose.yaml stop
+
+Let's add a document in the collection `my-collection` we created above in the database `my-db`.
+
+    {
+       "_id": ObjectId(),
+       "myid": 1,
+       "data": "some dynamic data loaded from DB"
+    }
+    
+We would try to fetch this document in the `JS` application.
+
+Let's add a simple JS application to interact with the MongoDB.
+
+[**Source**](https://gitlab.com/twn-youtube/docker-compose-crash-course) for the JS application.
+
+Get the clone of the above repository locally.
+
+Copy the `docker-compose.yaml` file we created above inside the root folder of the repository.
+
+Now we will edit the docker compose file to add the JS application:
+
+We are building image as we don't have image for JS application using the `Dockerfile` in the root folder.
+
+    version: '3.8'
+    services:
+      my-app:
+        build: .
+	ports:
+          - 3000:3000
+	environment:
+          MONGO_DB_USERNAME=admin
+          MONGO_DB_PWD=supersecret
+
+      mongodb:
+        image: mongo
+	ports:
+          - 27017:27017
+	environment:
+          MONGO_INITDB_ROOT_USERNAME=admin
+          MONGO_INITDB_ROOT_PASSWORD=supersecret
+
+      mongo-express:
+        image: mongo-express
+	ports:
+          - 8081:8081
+	environment:
+          ME_CONFIG_MONGODB_ADMINUSERNAME=admin
+          ME_CONFIG_MONGODB_ADMINPASSWORD=supersecret
+          ME_CONFIG_MONGODB_SERVER=mongodb
+        depends_on:
+	  - "mongodb"
+
+First stop all containers:
+
+    $ docker-compose -f docker-compose.yaml stop
+    $ docker-compose -f docker-compose.yaml up -d
+
+
+
+
 ### Commands
 
 ###### IMAGES :
@@ -561,3 +779,4 @@ Remove all unused networks
 
 [**Docker Containers 101**](https://www.youtube.com/watch?v=eGz9DS-aIeY)
 
+[**Ultimate Docker Compose Tutorial**](https://www.youtube.com/watch?v=SXwC9fSwct8)
