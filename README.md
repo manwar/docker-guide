@@ -409,26 +409,26 @@ Without docker-compose, you start 2 docker containers
 
 2) Start MongoDB container
 
-    $ docker run -d \
-      -p 27017:27017 \
-      -e MONGO_INITDB_ROOT_USERNAME=admin \
-      -e MONGO_INITDB_ROOT_PASSWORD=supersecret \
-      --network mongo-network \
-      --name mongodb
-      mongo
-    $ docker ps
+       $ docker run -d \
+         -p 27017:27017 \
+         -e MONGO_INITDB_ROOT_USERNAME=admin \
+         -e MONGO_INITDB_ROOT_PASSWORD=supersecret \
+         --network mongo-network \
+         --name mongodb \
+         mongo
+       $ docker ps
 
 3) Start Mongo Express Container
 
-    $ docker run -d \
-      -p 8081:8081 \
-      -e ME_CONFIG_MONGODB_ADMINUSERNAME=admin \
-      -e ME_CONFIG_MONGODB_ADMINPASSWORD=supersecret \
-      -e ME_CONFIG_MONGODB_SERVER=mongodb \
-      --network mongo-network \
-      --name mongo-express
-      mongo-express
-    $ docker ps
+       $ docker run -d \
+         -p 8081:8081 \
+         -e ME_CONFIG_MONGODB_ADMINUSERNAME=admin \
+         -e ME_CONFIG_MONGODB_ADMINPASSWORD=supersecret \
+         -e ME_CONFIG_MONGODB_SERVER=mongodb \
+         --network mongo-network \
+         --name mongo-express \
+         mongo-express
+       $ docker ps
 
 Open browser and visit `http://localhost:8081`
 
@@ -454,17 +454,17 @@ Here is the `docker-compose.yaml` file:
     services:
       mongodb:
         image: mongo
-	ports:
+        ports:
           - 27017:27017
-	environment:
+        environment:
           MONGO_INITDB_ROOT_USERNAME=admin
           MONGO_INITDB_ROOT_PASSWORD=supersecret
 
       mongo-express:
         image: mongo-express
-	ports:
+        ports:
           - 8081:8081
-	environment:
+        environment:
           ME_CONFIG_MONGODB_ADMINUSERNAME=admin
           ME_CONFIG_MONGODB_ADMINPASSWORD=supersecret
           ME_CONFIG_MONGODB_SERVER=mongodb
@@ -507,22 +507,22 @@ You can also configure the dependency in the docker compose file like below:
     services:
       mongodb:
         image: mongo
-	ports:
+        ports:
           - 27017:27017
-	environment:
+        environment:
           MONGO_INITDB_ROOT_USERNAME=admin
           MONGO_INITDB_ROOT_PASSWORD=supersecret
 
       mongo-express:
         image: mongo-express
-	ports:
+        ports:
           - 8081:8081
-	environment:
+        environment:
           ME_CONFIG_MONGODB_ADMINUSERNAME=admin
           ME_CONFIG_MONGODB_ADMINPASSWORD=supersecret
           ME_CONFIG_MONGODB_SERVER=mongodb
         depends_on:
-	  - "mongodb"
+          - "mongodb"
 
 Go to the browser in `Mongo Express` application. create a database and inside create a collection.
 
@@ -581,30 +581,30 @@ We are building image as we don't have image for JS application using the `Docke
     services:
       my-app:
         build: .
-	ports:
+        ports:
           - 3000:3000
-	environment:
+        environment:
           MONGO_DB_USERNAME=admin
           MONGO_DB_PWD=supersecret
 
       mongodb:
         image: mongo
-	ports:
+        ports:
           - 27017:27017
-	environment:
+        environment:
           MONGO_INITDB_ROOT_USERNAME=admin
           MONGO_INITDB_ROOT_PASSWORD=supersecret
 
       mongo-express:
         image: mongo-express
-	ports:
+        ports:
           - 8081:8081
-	environment:
+        environment:
           ME_CONFIG_MONGODB_ADMINUSERNAME=admin
           ME_CONFIG_MONGODB_ADMINPASSWORD=supersecret
           ME_CONFIG_MONGODB_SERVER=mongodb
         depends_on:
-	  - "mongodb"
+          - "mongodb"
 
 First stop all containers:
 
