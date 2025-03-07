@@ -711,6 +711,58 @@ In the configuration file, we can create top-level `secrets` element and referen
         depends_on:
           - "mongodb"
 
+We can create docker image and push to docker registry.
+
+For this, I have created a private registry on the DockerHub: `manwardock/my-app`.
+
+Let's build image first:
+
+    $ docker build -t manwardock/my-app:1.0 .
+
+List the image:
+
+    $ docker images
+
+Login to docker:
+
+    $ docker login
+
+Now push the image:
+
+    $ docker push manwardock/my-app:1.0
+
+Go to DockerHub web portal, you should your image list there.
+
+Once we have pushed the image, we can use it in the configuration file as below:
+
+    version: '3.8'
+    services:
+      my-app:
+        build: manwardoc/my-app:1.0
+        ports:
+          - 3000:3000
+        environment:
+          MONGO_DB_USERNAME=${MONGO_ADMIN_USER}
+          MONGO_DB_PWD=${MONGO_ADMIN_PASS}
+
+      mongodb:
+        image: mongo
+        ports:
+          - 27017:27017
+        environment:
+          MONGO_INITDB_ROOT_USERNAME=${MONGO_ADMIN_USER}
+          MONGO_INITDB_ROOT_PASSWORD=${MONGO_ADMIN_PASS}
+
+      mongo-express:
+        image: mongo-express
+        ports:
+          - 8081:8081
+        environment:
+          ME_CONFIG_MONGODB_ADMINUSERNAME=${MONGO_ADMIN_USER}
+          ME_CONFIG_MONGODB_ADMINPASSWORD=${MONGO_ADMIN_PASS}
+          ME_CONFIG_MONGODB_SERVER=mongodb
+        depends_on:
+          - "mongodb"
 
 
 ### Commands
@@ -720,6 +772,7 @@ In the configuration file, we can create top-level `secrets` element and referen
 List all Local images
 
     $ docker images
+
 Delete an image
 
     $ docker rmi <image_name>
