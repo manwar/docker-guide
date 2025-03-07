@@ -721,25 +721,80 @@ You can reference the `docker-compose.env` file like this:
 
     $ docker-compose --env-file docker-compose.env -f docker-compose.yaml -d up
 
-You can also create  docker secret.
+There is another alternative i.e. `Docker Secrets`.
 
-First create a secret file `my_secret.txt`
+The docker secrets works in `swarm mode`.
 
-    $ echo "This is my secret" > my_secret.txt
+    $ docker swarm init
 
-Now create docker secret like below:
+Check the status, you should `Swarm: active`
 
-    $ docker secret create my_secret my_secret.txt
+    $ docker info    
 
-Inspect the secret
+There are 2 ways to create secrets: `using file` and `using CLI`
 
-    $ docker secret inspect my_secret
+Let's create file `password.txt`:
 
-Use the secret
+    $ cat password.txt
+    password123
 
-    $ docker service create --name test_service --secret my_secret redis
+With docker secrets, we have the following options:`create`, `inspect`, `ls` and `rm`.
 
+    $ docker secret <option>
 
+Let's create secret key `db_pass` using the file `password.txt`:
+
+    $ docker secret create db_pass password.txt
+
+List all the secrets:
+
+    $ docker secret ls
+
+Inspect a secret key:
+
+    $ docker secret inspect db_pass
+
+Now we would create secret key using `CLI`:
+
+    $ echo "admin" | docker secret create db_user -
+
+We will now use the secret when creating service:
+
+The default location of secrets inside the container is `/run/secrets/`.
+
+    $ docker service create \
+      --name postgres-1 \
+      --secret db_user \
+      --secret db_pass \
+      -e POSTGRES_USER_FILE=/run/secrets/db_user \
+      -e POSTGRES_PASSWORD_FILE=/run/secrets/db_pass \
+      postgres
+
+List services:
+
+    $ docker service ls
+
+Get the container id
+
+    $ docker ps
+    $ docker exec -it <container_id> bash
+    $ cd /run/secrets
+    $ ls
+    $ cat db_user
+    $ exit
+
+To remove the secret, first we need to stop the service.
+
+    $ docker service rm postgres1
+    
+Check the service, there shouldn't be any:
+
+    $ docker ps
+    $ docker service ls
+
+Now remove the secret:
+
+    $ docker secret rm <secret_id>
 
 In the configuration file, we can create top-level `secrets` element and reference the secret in the `secrets` attribute in the `services` like below:
 
@@ -983,6 +1038,10 @@ Remove all unused networks
 
     $ docker network prune
 
+###### Docker History
+
+    $ docker history test 
+    $ docker history test --no-trunk
 
 ### RESOURCES
 ***
