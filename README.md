@@ -404,8 +404,8 @@ Without docker-compose, you start 2 docker containers
 
 1) Create a docker network
 
-    $ docker network create mongo-network
-    $ docker network ls
+       $ docker network create mongo-network
+       $ docker network ls
 
 2) Start MongoDB container
 
@@ -524,7 +524,9 @@ You can also configure the dependency in the docker compose file like below:
         depends_on:
           - "mongodb"
 
-Go to the browser in `Mongo Express` application. create a database and inside create a collection.
+Open the `Mongo Express` application in the brower: `http://localhost:8081`. 
+
+Then create a database `my-db` and inside the database, create a collection `my-collection`.
 
 You should check the log showing all activities.
 
@@ -547,10 +549,6 @@ It also removed the network as well.
 However if you stop the container and start again, you still have all the changes.
 
 So you would do something like below:
-
-Did you notice `start` and not `up` to start the container?
-
-Also `stop` and NOT `down` to stop the container?
 
     $ docker-compose -f docker-compose.yaml start -d
     $ docker-compose -f docker-compose.yaml stop
