@@ -90,7 +90,7 @@ It uses a `Hypervisor` layer with a lightweight `Linux` distro.
 
 You can download the docker from the official website and follow the instructions for your OS.
 
-For me, I am running `Ubuntu 24.04 LTS` in `WSL2`.
+For me, I am running `Ubuntu 24.04.01 LTS` in `WSL2`.
 
 I found this [**installation guide**](https://gist.github.com/dehsilvadeveloper/c3bdf0f4cdcc5c177e2fe9be671820c7) very handy.
 
