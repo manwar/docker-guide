@@ -61,3 +61,5 @@ If you want to remove the containers and docker network completely then you do t
     $ docker rm mongodb mongo-express
 
     $ docker network rm mongo-network
+
+Remember, once you remove the containers you loose all the changes. However if you just stop then it keeps everything.
