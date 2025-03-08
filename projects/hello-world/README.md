@@ -11,7 +11,7 @@ We then create `Dockerfile` to build a new docker image of our python applicatio
     COPY hello-world.py /hello-world
     CMD ["python", "hello-world.py"]
 
-After we create configuration file, `docker-compose.yml` for `docker-compose`.
+After that we create configuration file, `docker-compose.yml` for `docker-compose`.
 
     $ cat docker-compose.yml
     version: '3.8'
@@ -26,7 +26,7 @@ Time to create the docker image:
 
     $ docker build -t hello-world:0.1 .
 
-Then we can use the `docker-compose` to start the container.
+Now we can use the `docker-compose` to start the container.
 
     $ docker-compose up
 
