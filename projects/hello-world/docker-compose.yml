@@ -1,0 +1,7 @@
+version: '3.8'
+
+services:
+  hello-world:
+    build: .
+    image: hello-world:0.1
+    container_name: hello-world
