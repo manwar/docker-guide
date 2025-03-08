@@ -506,6 +506,8 @@ Now start the containers:
 
     $ docker-compose -f docker-compose.yaml up
 
+**NOTE:** The `-f` flag is optional if the configuration file is named as `docker-compose.yml` or `docker-compose.yaml` and in the current folder.
+
 If you want to see the default network created by `docker-compose` then do this:
 
     $ docker network ls
