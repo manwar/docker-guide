@@ -55,3 +55,9 @@ Next time when you want to start again, just use the script: `up.sh`
     $ docker start mongodb
 
     $ docker start mongo-express
+
+If you want to remove the containers and docker network completely then you do the following:
+
+    $ docker rm mongodb mongo-express
+
+    $ docker network rm mongo-network
