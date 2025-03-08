@@ -408,10 +408,16 @@ Without docker-compose, you start 2 docker containers
 1) Create a docker network
 
        $ docker network create mongo-network
-
+       7ca8d14845c684336d8e494515670675a8685646455e3761a0e88b0ff4e3234e
+   
        $ docker network ls
+       NETWORK ID     NAME            DRIVER    SCOPE
+       1240c8ea9eb8   bridge          bridge    local
+       d0b60d358dfb   host            host      local
+       7ca8d14845c6   mongo-network   bridge    local
+       7700c2bc9f69   none            null      local
 
-2) Start MongoDB container
+3) Start MongoDB container
 
        $ docker run -d \
          -p 27017:27017 \
@@ -423,7 +429,7 @@ Without docker-compose, you start 2 docker containers
 
        $ docker ps
 
-3) Start Mongo Express Container
+4) Start Mongo Express Container
 
        $ docker run -d \
          -p 8081:8081 \
