@@ -35,7 +35,7 @@ OS Kernel layer is responsible to interact with the hardware.
 
 Kernel is at the core of every OS. It interacts between hardware and software components.
 
-  OS Application Layer <=> OS Kernel <=> Hardware
+    OS Application Layer <=> OS Kernel <=> Hardware
 
 VM is also a virtualization tool but they differ in what part of OS do they virtualize.
 
