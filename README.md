@@ -778,7 +778,7 @@ Now we can reference this in the configuration file like below:
 
 You can reference the `docker-compose.env` file like this:
 
-    $ docker-compose --env-file docker-compose.env -f docker-compose.yml -d up
+    $ docker-compose --env-file docker-compose.env -f docker-compose.yml up -d
 
 There is another alternative to hide sensitive data i.e. `Docker Secrets`.
 
