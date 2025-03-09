@@ -160,9 +160,9 @@ To list docker containers:
 
  How do we get these images?
 
-Docker Registry is a storage and distribution system for Docker images.
+`Docker Registry` is a storage and distribution system for `Docker` images.
 
-Docker hosts one of the biggest Docker Registry called [**Docker Hub**](https://hub.docker.com).
+`Docker` hosts one of the biggest `Docker Registry` called [**Docker Hub**](https://hub.docker.com).
 
 You don't need to sign up to browse and lookup docker images on `Docker Hub`.
 
