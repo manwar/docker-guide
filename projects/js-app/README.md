@@ -182,6 +182,8 @@ List the containers:
     c3b3c03f718a   mongo           "docker-entrypoint.s…"   23 minutes ago      Up 23 minutes      0.0.0.0:27017->27017/tcp, [::]:27017->27017/tcp   js-app_mongodb_1
     11c1b89ba789   js-app_js-app   "docker-entrypoint.s…"   23 minutes ago      Up 23 minutes      0.0.0.0:3000->3000/tcp, [::]:3000->3000/tcp       js-app_js-app_1    
 
+Access the Mongo Express: `http://localhost:8081` using default credentials `admin/pass`.
+
 Access the JS application: `http://localhost:3000`
 
 For this we would create a new database `my-db` in `Mongo Express`.
