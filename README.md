@@ -691,7 +691,7 @@ You can access the `JS` application: `http://localhost:3000`
 
 **NOTE:** It is not recommended to hardcode sensitive data in the docker compose configuration file.
 
-To solve the problem, we can create `docker variables` as environment variables as below:
+To solve the problem, we can create `docker variables` as environment variables like below:
 
     version: '3.8'
     services:
