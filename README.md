@@ -1,14 +1,43 @@
 # Docker Guide
+1. [What is Docker?](#what-is-docker)
+2. [Development](#development)
+3. [Deployment](#deployment)
+4. [Virtual Machine vs Docker](#virtual-machine-vs-docker)
+   1. [Virtual Machine](#virtual-machine)
+   2. [Docker](#docker)
+5. [Docker Image vs Docker Container](#docker-image-vs-docker-container)   
+6. [Docker Desktop](#docker-desktop)
+7. [Installation](#installation)
+   1. [Update System](#update-system)
+   2. [Install Dependencies](#install-dependencies)
+   3. [Add Docker GPG Key](#add-docker-gpg-key)
+   4. [Add the Docker Repository](#add-the-docker-repository)
+   5. [Install Docker Engine](#install-docker-engine)
+   6. [Docker Group](#docker-group)
+   7. [Restart WSL](#restart-wsl)
+   8. [Verify](#verify)
+8. [Docker Registry](#docker-registry)
+9. [Container Port vs Host Port](#container-port-vs-host-port)
+10. [Registry vs Repository](#registry-vs-repository)
+11. [Create Docker Image](#create-docker-image)
+12. [Docker Compose](#docker-compose)
+13. [Usefull Commands](#usefull-commands)
+    1. [Image](#image)
+    2. [Container](#container)
+    3. [Troubleshoot](#troubleshoot)
+    4. [Docker Hub](#docker-hub)
+    5. [Volume](#volume)
+    6. [Network](#network)
+   
 
-
-### What is Docker?
+## What is Docker?
 
   - Virtualization Software
   - Makes developing and deploying applications easier
   - Packages application with all dependencies
   - Easily shared and distributed
 
-### Development process using containers
+## Development
 
   - Own isolated environment
   - Start service as a Docker container using command e.g. `docker run postgres`
@@ -19,12 +48,12 @@ Docker standardizes process of running any service on any local dev environment.
 
 It is easier to run different versions of same application without any conflicts.
 
-### Deployment process using containers
+## Deployment
 
   - First we need to have Docker runtime on the server, one time only
   - Then run Docker command to fetch and run the Docker artifacts
 
-### Virtual Machine vs Docker
+## Virtual Machine vs Docker
 
 To understand this, let's explore how an OS is made up. There are 2 main layers:
 
@@ -37,30 +66,15 @@ Kernel is at the core of every OS. It interacts between hardware and software co
 
     OS Application Layer <=> OS Kernel <=> Hardware
 
-VM is also a virtualization tool but they differ in what part of OS do they virtualize.
+### Virtual Machine
 
-Docker virtualize the OS Application Layer.
-
-A docker contains OS application layer. Also services and apps installed on top of that layer. 
-
-It uses the kernel of the host as it doesn't have it's own kernel.
+Virtual machine is also a virtualization tool but they differ in what part of OS do they virtualize.
 
 A virtual machine contains OS application layer and OS kernel. 
 
 It doesn't use host kernel, instead it uses it's own kernel.
 
-    VM1: App A, Guest OS 1
-    VM2: App B, Guest OS 2
-
-Docker images are much smaller as it doesn't have its own kernel
-
-Docker containers take seconds to start as VM take minutes
-
 VM is compatible with all `OS` i.e. on `Windows` host operating systems, we can have guest operating system as `Linux` and `MacOS`.
-
-`Docker` is only compatible with `Linux` distros.
-
-##### Virtual Machine
 
     - Hardware
     - Host OS e.g. Ubuntu    
@@ -69,7 +83,22 @@ VM is compatible with all `OS` i.e. on `Windows` host operating systems, we can 
       - CentOS (VM)
       - Debian (VM)
 
-##### Docker
+    VM1: App A, Guest OS 1
+    VM2: App B, Guest OS 2
+
+### Docker
+
+Docker virtualize the OS Application Layer.
+
+A docker contains OS application layer. Also services and apps installed on top of that layer. 
+
+It uses the kernel of the host as it doesn't have it's own kernel.
+
+`Docker` images are much smaller as it doesn't have its own kernel
+
+`Docker` containers take seconds to start as VM take minutes
+
+`Docker` is only compatible with `Linux` distros.
 
     - Hardware
     - Host OS e.g. Ubuntu
@@ -80,59 +109,7 @@ VM is compatible with all `OS` i.e. on `Windows` host operating systems, we can 
 
 The docker container is like a micro computer.
 
-### Docker Desktop
-
-It allows to run `Linux` containers on `Windows` or `MacOS`.
-
-It uses a `Hypervisor` layer with a lightweight `Linux` distro.
-
-### Install Docker
-
-You can download the docker from the official website and follow the instructions for your OS.
-
-For me, I am running `Ubuntu 24.04.01 LTS` in `WSL2`.
-
-I found this [**installation guide**](https://gist.github.com/dehsilvadeveloper/c3bdf0f4cdcc5c177e2fe9be671820c7) very handy.
-
-It worked like a charm for me.
-
-#### Step 1: Update the system
-
-    $ sudo apt update && sudo apt upgrade -y
-	
-#### Step 2: Install dependencies
-
-    $ sudo apt install -y apt-transport-https ca-certificates curl software-properties-common
-	
-#### Step 3: Add Docker GPG Key
-
-    $ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
-	
-#### Step 4: Add the Docker Repository
-
-    $ echo "deb [signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-	
-#### Step 5: Install Docker Engine	
-
-    $ sudo apt update
-    $ sudo apt install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
-	
-#### Step 6: Add yourself to Docker Group
-
-Add your user to the Docker group to avoid the need to use sudo on every Docker command:
-
-    $ sudo usermod -aG docker $USER
-	
-#### Step 7: Restart WSL via the Windows command line (Powershell).
-
-    > wsl --shutdown	
-	
-#### Step 8: Access Ubuntu again. Check if Docker was installed correctly on the Ubuntu terminal:
-
-    $ docker --version
-    Docker version 28.0.1, build 068a01e
-
-### Docker Images vs Docker Containers
+## Docker Image vs Docker Container
 
 Docker image is an executable application artifact. It includes app source code but also complete environment configuration. 
 
@@ -154,7 +131,63 @@ To list docker containers:
     $ docker ps
     CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
 
- ### Docker Registry
+## Docker Desktop
+
+It allows to run `Linux` containers on `Windows` or `MacOS`.
+
+It uses a `Hypervisor` layer with a lightweight `Linux` distro.
+
+## Installation
+
+You can download the docker from the official website and follow the instructions for your OS.
+
+For me, I am running `Ubuntu 24.04.01 LTS` in `WSL2`.
+
+I found this [**installation guide**](https://gist.github.com/dehsilvadeveloper/c3bdf0f4cdcc5c177e2fe9be671820c7) very handy.
+
+It worked like a charm for me.
+
+### Update System
+
+    $ sudo apt update && sudo apt upgrade -y
+	
+### Install dependencies
+
+    $ sudo apt install -y apt-transport-https ca-certificates curl software-properties-common
+	
+### Add Docker GPG Key
+
+    $ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+	
+### Add the Docker Repository
+
+    $ echo "deb [signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+	
+### Install Docker Engine	
+
+    $ sudo apt update
+    $ sudo apt install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+	
+### Docker Group
+
+Add your user to the Docker group to avoid the need to use sudo on every Docker command:
+
+    $ sudo usermod -aG docker $USER
+	
+### Restart WSL
+
+Open up Windows command line (Powershell) and type this:
+
+    > wsl --shutdown	
+	
+### Verify
+
+Access Ubuntu again. Check if Docker was installed correctly on the Ubuntu terminal:
+
+    $ docker --version
+    Docker version 28.0.1, build 068a01e
+
+ ## Docker Registry
 
  As we now know that we run containers from images.
 
@@ -234,18 +267,13 @@ Now if we check the containers, we see two containers running.
     beb858459a56   nginx:1.23   "/docker-entrypoint.…"   3 seconds ago    Up 2 seconds    80/tcp    stoic_lumiere
     3f35dc78986b   nginx:1.27   "/docker-entrypoint.…"   55 minutes ago   Up 55 minutes   80/tcp    vigorous_elbakyan
 
-### Container Port vs Host Port
+## Container Port vs Host Port
 
 Application inside the container runs in an isolated Docker network.
  
 This allows us to run the same app running on the same port multiple times.
 
 We need to expose the container port to the host.
-
-#### Port Binding
-
-     Bind the container's port to the host's port to make the service
-     available to the outside world.
 
 Every application runs on specific port e.g. nginx runs on port 80, redis runs on port 6379.
 
@@ -317,7 +345,7 @@ You can give a name to a container:
     CONTAINER ID   IMAGE        COMMAND                  CREATED         STATUS         PORTS                                     NAMES
     5058136e20a2   nginx:1.27   "/docker-entrypoint.…"   4 seconds ago   Up 4 seconds   0.0.0.0:9000->80/tcp, [::]:9000->80/tcp   nginx-1
 
-### Registry vs Repository
+## Registry vs Repository
 
 `Docker Registry` is a service providing storage and can be hosted by a third party like `AWS` or by yourself. 
 
@@ -329,7 +357,7 @@ It is also a collection of repositories.
 
 On `Docker Hub`, you can have private or public repositories for your application.
 
-### Create docker image
+## Create Docker Image
 
 `Dockerfile` can be used to create docker image.
 
@@ -394,7 +422,7 @@ Stop the container:
 
     $ docker-compose down
 
-### Docker Compose
+## Docker Compose
 
 It's a tool for defining and running multi-container Docker applications.
 
@@ -892,9 +920,9 @@ Once we have pushed the image, we can use it in the configuration file as below:
         depends_on:
           - "mongodb"
 
-### Commands
+## Usefull Commands
 
-###### IMAGES:
+### Image
 
 List all Local images
 
@@ -913,7 +941,7 @@ Build an image from a Dockerfile
     $ docker build -t <image_name>:<version> . //version is optional
     $ docker build -t <image_name>:<version> . -no-cache //build without cache
 
-###### CONTAINER:
+### Container
 
 List all Local containers (running & stopped)
 
@@ -957,7 +985,7 @@ Delete a container
 
     $ docker rm <container_name> (or <container_id)
 
-###### TROUBLESHOOT:
+### Troubleshoot
 
 Fetch logs of a container
 
@@ -968,7 +996,7 @@ Open shell inside running container
     $ docker exec -it <container_name> /bin/bash
     $ docker exec -it <container_name> sh
 
-###### Docker Hub:
+### Docker Hub:
 
 Pull an image from DockerHub
 
@@ -992,7 +1020,7 @@ Search for an image on DockerHub
 
     $ docker search <image_name>
 
-###### VOLUMES:
+### Volume
 
 List all Volumes
 
@@ -1030,7 +1058,7 @@ Remove unused local volumes
 
     $ docker volume prune //for anonymous volumes
 
-###### NETWORK:
+### Network
 
 List all networks
 
@@ -1063,3 +1091,4 @@ Remove all unused networks
 [**Docker Containers 101**](https://www.youtube.com/watch?v=eGz9DS-aIeY)
 
 [**Ultimate Docker Compose Tutorial**](https://www.youtube.com/watch?v=SXwC9fSwct8)
+
