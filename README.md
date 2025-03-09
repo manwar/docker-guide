@@ -28,7 +28,10 @@
     4. [Docker Hub](#docker-hub)
     5. [Volume](#volume)
     6. [Network](#network)
-   
+    7. [Docker History](#docker-history)
+14. [Resources](#resources)    
+
+***   
 
 ## What is Docker?
 
@@ -36,6 +39,8 @@
   - Makes developing and deploying applications easier
   - Packages application with all dependencies
   - Easily shared and distributed
+
+***
 
 ## Development
 
@@ -48,10 +53,14 @@ Docker standardizes process of running any service on any local dev environment.
 
 It is easier to run different versions of same application without any conflicts.
 
+***
+
 ## Deployment
 
   - First we need to have Docker runtime on the server, one time only
   - Then run Docker command to fetch and run the Docker artifacts
+
+***
 
 ## Virtual Machine vs Docker
 
@@ -109,6 +118,8 @@ It uses the kernel of the host as it doesn't have it's own kernel.
 
 The docker container is like a micro computer.
 
+***
+
 ## Docker Image vs Docker Container
 
 Docker image is an executable application artifact. It includes app source code but also complete environment configuration. 
@@ -131,11 +142,15 @@ To list docker containers:
     $ docker ps
     CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
 
+***
+
 ## Docker Desktop
 
 It allows to run `Linux` containers on `Windows` or `MacOS`.
 
 It uses a `Hypervisor` layer with a lightweight `Linux` distro.
+
+***
 
 ## Installation
 
@@ -187,11 +202,13 @@ Access Ubuntu again. Check if Docker was installed correctly on the Ubuntu termi
     $ docker --version
     Docker version 28.0.1, build 068a01e
 
- ## Docker Registry
+***
 
- As we now know that we run containers from images.
+## Docker Registry
 
- How do we get these images?
+As we now know that we run containers from images.
+
+How do we get these images?
 
 `Docker Registry` is a storage and distribution system for `Docker` images.
 
@@ -330,9 +347,6 @@ To remove the container:
 
      $ docker rm bf4e2dc18a60
 
-#### To stop all containers: `docker stop $(docker ps -q)`
-#### To remove all containers: `docker rm $(docker ps -a -q)`
-
 You can even start the container that we stopped earlier, rather than creating a new.
 
      $ docker start bf4e2dc18a60
@@ -345,6 +359,8 @@ You can give a name to a container:
     CONTAINER ID   IMAGE        COMMAND                  CREATED         STATUS         PORTS                                     NAMES
     5058136e20a2   nginx:1.27   "/docker-entrypoint.…"   4 seconds ago   Up 4 seconds   0.0.0.0:9000->80/tcp, [::]:9000->80/tcp   nginx-1
 
+***
+
 ## Registry vs Repository
 
 `Docker Registry` is a service providing storage and can be hosted by a third party like `AWS` or by yourself. 
@@ -356,6 +372,8 @@ It is also a collection of repositories.
 `Docker Hub` is a registry.
 
 On `Docker Hub`, you can have private or public repositories for your application.
+
+***
 
 ## Create Docker Image
 
@@ -421,6 +439,8 @@ Now build and run the container:
 Stop the container:
 
     $ docker-compose down
+
+***
 
 ## Docker Compose
 
@@ -920,6 +940,8 @@ Once we have pushed the image, we can use it in the configuration file as below:
         depends_on:
           - "mongodb"
 
+***
+
 ## Usefull Commands
 
 ### Image
@@ -951,9 +973,7 @@ List all running containers
 
     $ docker ps
 
-Create & run a new container
-
-If image not available locally, it’ll be downloaded from DockerHub
+Create and run a new container. If image not available locally, it’ll be downloaded from DockerHub.
 
     $ docker run <image_name>
 
@@ -985,6 +1005,14 @@ Delete a container
 
     $ docker rm <container_name> (or <container_id)
 
+Stop all containers
+
+    $ docker stop $(docker ps -q)
+    
+Remove all containers
+
+    $ docker rm $(docker ps -a -q)
+
 ### Troubleshoot
 
 Fetch logs of a container
@@ -1010,11 +1038,11 @@ Login into DockerHub
 
     $ docker login -u <image_name>
 
-Or
+or
 
     $ docker login
 
-//also, docker logout to remove credentials
+Also, `docker logout` to remove credentials.
 
 Search for an image on DockerHub
 
@@ -1050,7 +1078,7 @@ To create a Bind Mount
 
     $ docker run --volume <host_path>:<container_path>
 
-//or using --mount
+or using `--mount`
 
     $ docker run --mount type=bind,src=<host_path>,dest=<container_path>
 
@@ -1076,13 +1104,14 @@ Remove all unused networks
 
     $ docker network prune
 
-###### Docker History
+### Docker History
 
     $ docker history test 
     $ docker history test --no-trunk
 
-### RESOURCES
 ***
+
+## Resources
 
 [**What is Docker?**](https://www.youtube.com/watch?v=H8Lyj2D_cWo)
 
