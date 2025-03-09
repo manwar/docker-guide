@@ -469,17 +469,17 @@ Here is the `docker-compose.yaml` file:
         ports:
           - 27017:27017
         environment:
-          MONGO_INITDB_ROOT_USERNAME=admin
-          MONGO_INITDB_ROOT_PASSWORD=supersecret
+          - MONGO_INITDB_ROOT_USERNAME=admin
+          - MONGO_INITDB_ROOT_PASSWORD=supersecret
 
       mongo-express:
         image: mongo-express
         ports:
           - 8081:8081
         environment:
-          ME_CONFIG_MONGODB_ADMINUSERNAME=admin
-          ME_CONFIG_MONGODB_ADMINPASSWORD=supersecret
-          ME_CONFIG_MONGODB_SERVER=mongodb
+          - ME_CONFIG_MONGODB_ADMINUSERNAME=admin
+          - ME_CONFIG_MONGODB_ADMINPASSWORD=supersecret
+          - ME_CONFIG_MONGODB_SERVER=mongodb
 
 Missing network name in the configuration?
 
@@ -533,17 +533,17 @@ You can also configure the dependency in the docker compose file like below:
         ports:
           - 27017:27017
         environment:
-          MONGO_INITDB_ROOT_USERNAME=admin
-          MONGO_INITDB_ROOT_PASSWORD=supersecret
+          - MONGO_INITDB_ROOT_USERNAME=admin
+          - MONGO_INITDB_ROOT_PASSWORD=supersecret
 
       mongo-express:
         image: mongo-express
         ports:
           - 8081:8081
         environment:
-          ME_CONFIG_MONGODB_ADMINUSERNAME=admin
-          ME_CONFIG_MONGODB_ADMINPASSWORD=supersecret
-          ME_CONFIG_MONGODB_SERVER=mongodb
+          - ME_CONFIG_MONGODB_ADMINUSERNAME=admin
+          - ME_CONFIG_MONGODB_ADMINPASSWORD=supersecret
+          - ME_CONFIG_MONGODB_SERVER=mongodb
         depends_on:
           - "mongodb"
 
@@ -606,25 +606,25 @@ We are building image as we don't have image for JS application using the `Docke
         ports:
           - 3000:3000
         environment:
-          MONGO_DB_USERNAME=admin
-          MONGO_DB_PWD=supersecret
+          - MONGO_DB_USERNAME=admin
+          - MONGO_DB_PWD=supersecret
 
       mongodb:
         image: mongo
         ports:
           - 27017:27017
         environment:
-          MONGO_INITDB_ROOT_USERNAME=admin
-          MONGO_INITDB_ROOT_PASSWORD=supersecret
+          - MONGO_INITDB_ROOT_USERNAME=admin
+          - MONGO_INITDB_ROOT_PASSWORD=supersecret
 
       mongo-express:
         image: mongo-express
         ports:
           - 8081:8081
         environment:
-          ME_CONFIG_MONGODB_ADMINUSERNAME=admin
-          ME_CONFIG_MONGODB_ADMINPASSWORD=supersecret
-          ME_CONFIG_MONGODB_SERVER=mongodb
+          - ME_CONFIG_MONGODB_ADMINUSERNAME=admin
+          - ME_CONFIG_MONGODB_ADMINPASSWORD=supersecret
+          - ME_CONFIG_MONGODB_SERVER=mongodb
         depends_on:
           - "mongodb"
 
@@ -657,25 +657,25 @@ To solve the problem, we can create `docker variables` as environment variables 
         ports:
           - 3000:3000
         environment:
-          MONGO_DB_USERNAME=${MONGO_ADMIN_USER}
-          MONGO_DB_PWD=${MONGO_ADMIN_PASS}
+          - MONGO_DB_USERNAME=${MONGO_ADMIN_USER}
+          - MONGO_DB_PWD=${MONGO_ADMIN_PASS}
 
       mongodb:
         image: mongo
         ports:
           - 27017:27017
         environment:
-          MONGO_INITDB_ROOT_USERNAME=${MONGO_ADMIN_USER}
-          MONGO_INITDB_ROOT_PASSWORD=${MONGO_ADMIN_PASS}
+          - MONGO_INITDB_ROOT_USERNAME=${MONGO_ADMIN_USER}
+          - MONGO_INITDB_ROOT_PASSWORD=${MONGO_ADMIN_PASS}
 
       mongo-express:
         image: mongo-express
         ports:
           - 8081:8081
         environment:
-          ME_CONFIG_MONGODB_ADMINUSERNAME=${MONGO_ADMIN_USER}
-          ME_CONFIG_MONGODB_ADMINPASSWORD=${MONGO_ADMIN_PASS}
-          ME_CONFIG_MONGODB_SERVER=mongodb
+          - ME_CONFIG_MONGODB_ADMINUSERNAME=${MONGO_ADMIN_USER}
+          - ME_CONFIG_MONGODB_ADMINPASSWORD=${MONGO_ADMIN_PASS}
+          - ME_CONFIG_MONGODB_SERVER=mongodb
         depends_on:
           - "mongodb"
 
@@ -711,25 +711,25 @@ Now we can reference this in the configuration file like below:
         ports:
           - 3000:3000
         environment:
-          MONGO_DB_USERNAME=${mongo_admin_user}
-          MONGO_DB_PWD=${mongo_admin_pass}
+          - MONGO_DB_USERNAME=${mongo_admin_user}
+          - MONGO_DB_PWD=${mongo_admin_pass}
 
       mongodb:
         image: mongo
         ports:
           - 27017:27017
         environment:
-          MONGO_INITDB_ROOT_USERNAME=${mongo_admin_user}
-          MONGO_INITDB_ROOT_PASSWORD=${mongo_admin_pass}
+          - MONGO_INITDB_ROOT_USERNAME=${mongo_admin_user}
+          - MONGO_INITDB_ROOT_PASSWORD=${mongo_admin_pass}
 
       mongo-express:
         image: mongo-express
         ports:
           - 8081:8081
         environment:
-          ME_CONFIG_MONGODB_ADMINUSERNAME=${mongo_admin_user}
-          ME_CONFIG_MONGODB_ADMINPASSWORD=${mongo_admin_pass}
-          ME_CONFIG_MONGODB_SERVER=mongodb
+          - ME_CONFIG_MONGODB_ADMINUSERNAME=${mongo_admin_user}
+          - ME_CONFIG_MONGODB_ADMINPASSWORD=${mongo_admin_pass}
+          - ME_CONFIG_MONGODB_SERVER=mongodb
         depends_on:
           - "mongodb"
 
@@ -840,7 +840,7 @@ In the configuration file, we can create top-level `secrets` element and referen
         secrets:
           - my_secret
 	environment:
-          ME_CONFIG_MONGODB_SERVER=mongodb
+          - ME_CONFIG_MONGODB_SERVER=mongodb
         depends_on:
           - "mongodb"
 
@@ -875,25 +875,25 @@ Once we have pushed the image, we can use it in the configuration file as below:
         ports:
           - 3000:3000
         environment:
-          MONGO_DB_USERNAME=${MONGO_ADMIN_USER}
-          MONGO_DB_PWD=${MONGO_ADMIN_PASS}
+          - MONGO_DB_USERNAME=${MONGO_ADMIN_USER}
+          - MONGO_DB_PWD=${MONGO_ADMIN_PASS}
 
       mongodb:
         image: mongo
         ports:
           - 27017:27017
         environment:
-          MONGO_INITDB_ROOT_USERNAME=${MONGO_ADMIN_USER}
-          MONGO_INITDB_ROOT_PASSWORD=${MONGO_ADMIN_PASS}
+          - MONGO_INITDB_ROOT_USERNAME=${MONGO_ADMIN_USER}
+          - MONGO_INITDB_ROOT_PASSWORD=${MONGO_ADMIN_PASS}
 
       mongo-express:
         image: mongo-express
         ports:
           - 8081:8081
         environment:
-          ME_CONFIG_MONGODB_ADMINUSERNAME=${MONGO_ADMIN_USER}
-          ME_CONFIG_MONGODB_ADMINPASSWORD=${MONGO_ADMIN_PASS}
-          ME_CONFIG_MONGODB_SERVER=mongodb
+          - ME_CONFIG_MONGODB_ADMINUSERNAME=${MONGO_ADMIN_USER}
+          - ME_CONFIG_MONGODB_ADMINPASSWORD=${MONGO_ADMIN_PASS}
+          - ME_CONFIG_MONGODB_SERVER=mongodb
         depends_on:
           - "mongodb"
 
