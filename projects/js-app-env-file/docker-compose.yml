@@ -1,0 +1,28 @@
+version: '3.8'
+services:
+  js-app:
+    build: .
+    ports:
+      - 3000:3000
+    environment:
+      - MONGO_DB_USERNAME=${mongo_admin_user}
+      - MONGO_DB_PWD=${mongo_admin_pass}
+
+  mongodb:
+    image: mongo
+    ports:
+      - 27017:27017
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${mongo_admin_user}
+      - MONGO_INITDB_ROOT_PASSWORD=${mongo_admin_pass}
+
+  mongo-express:
+    image: mongo-express
+    ports:
+      - 8081:8081
+    environment:
+      - ME_CONFIG_MONGODB_ADMINUSERNAME=${mongo_admin_user}
+      - ME_CONFIG_MONGODB_ADMINPASSWORD=${mongo_admin_pass}
+      - ME_CONFIG_MONGODB_SERVER=mongodb
+    depends_on:
+      - "mongodb"
