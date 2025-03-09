@@ -319,7 +319,7 @@ You can give a name to a container:
 
 ### Registry vs Repository
 
-Docker Registry is a service providing storage and can be hosted by a third party like `AWS` or by yourself. 
+`Docker Registry` is a service providing storage and can be hosted by a third party like `AWS` or by yourself. 
 
 It is also a collection of repositories.
 
@@ -859,7 +859,7 @@ Now push the image:
 
     $ docker push manwardock/my-app:1.0
 
-Go to DockerHub web portal, you should your image list there.
+Go to `Docker Hub` web portal, you should have your image listed there.
 
 Once we have pushed the image, we can use it in the configuration file as below:
 
