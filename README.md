@@ -134,7 +134,7 @@ Add your user to the Docker group to avoid the need to use sudo on every Docker 
 
 ### Docker Images vs Docker Containers
 
-Docker image is an executable application artifact. It includes app source code but also complete environment configutation. 
+Docker image is an executable application artifact. It includes app source code but also complete environment configuration. 
 
 We can add environment variables, create directories, files etc.
 
@@ -164,7 +164,7 @@ Docker Registry is a storage and distribution system for Docker images.
 
 Docker hosts one of the biggest Docker Registry called [**Docker Hub**](https://hub.docker.com).
 
-You don't need to sign up to browse and lookup docker images on docker hub.
+You don't need to sign up to browse and lookup docker images on `Docker Hub`.
 
 Every docker images comes with tag i.e. version.
 
@@ -273,7 +273,7 @@ Check the container status
 
 Check in the browser if you can access the nginx: `http://localhost:9000`
 
-You can check the containers log:
+You can check the container's log:
 
     $ docker logs bf4e2dc18a60
 
@@ -292,7 +292,7 @@ Generally it is advisable to port bind the same port.
 
 Docker run command creates a new container everytime and doesn't re-use the previous container.
 
-We have executed `docker run`  multiple times but when we do `docker ps`  it only shows one. 
+We have executed `docker run`  multiple times but when we do `docker ps` it only shows one. 
 
 However those containers still exist.
 
@@ -302,13 +302,8 @@ To remove the container:
 
      $ docker rm bf4e2dc18a60
 
-To stop all containers:
-
-     $ docker stop $(docker ps -q)
-
-To remove all containers:
-
-     $ docker rm $(docker ps -a -q)
+#### To stop all containers: `docker stop $(docker ps -q)`
+#### To remove all containers: `docker rm $(docker ps -a -q)`
 
 You can even start the container that we stopped earlier, rather than creating a new.
 
@@ -324,15 +319,15 @@ You can give a name to a container:
 
 ### Registry vs Repository
 
-Docker Registry is a service providing storage and can be hosted by a third party like AWS or by yourself. 
+Docker Registry is a service providing storage and can be hosted by a third party like `AWS` or by yourself. 
 
 It is also a collection of repositories.
 
-Docker Repository is collection of related images with the same name but different versions.
+`Docker Repository` is a collection of related images with the same name but different versions.
 
 `Docker Hub` is a registry.
 
-On Docker Hub, you can have private or public repositories for your application.
+On `Docker Hub`, you can have private or public repositories for your application.
 
 ### Create docker image
 
@@ -460,7 +455,7 @@ Also you create and start all the services with a single command.
 
 Let's convert docker commands to docker compose configuration.
 
-Here is the `docker-compose.yaml` file:
+Here is the `docker-compose.yml` file:
 
     version: '3.8'
     services:
@@ -487,7 +482,7 @@ Well, `docker-compose` sets up a single network for the application by default.
 
 It also gives container name in format: `<folder_name>-<image_name>-1` by default.
 
-So if the above `docker-compose.yaml` is in the folder `project` then it would create two containers as below:
+So if the above `docker-compose.yml` is in the folder `project` then it would create two containers as below:
 
     project-mongodb-1
     project-mongo-express-1
@@ -510,7 +505,7 @@ Check no container running:
 
 Now start the containers:
 
-    $ docker-compose -f docker-compose.yaml up
+    $ docker-compose -f docker-compose.yml up
 
 **NOTE:** The `-f` flag is optional if the configuration file is named as `docker-compose.yml` or `docker-compose.yaml` and in the current folder.
 
@@ -555,11 +550,11 @@ You should check the log showing all activities.
 
 If you want to run docker compose in `detach` mode, do this:
 
-    $ docker-compose -f docker-compose.yaml up -d
+    $ docker-compose -f docker-compose.yml up -d
 
 To shutdown all services, do this:
 
-    $ docker-compose -f docker-compose.yaml down
+    $ docker-compose -f docker-compose.yml down
 
 If you noticed, it not only stopped the containers but also removed it too.
 
@@ -573,9 +568,9 @@ However if you stop the container and start again, you still have all the change
 
 So you would do something like below:
 
-    $ docker-compose -f docker-compose.yaml start -d
+    $ docker-compose -f docker-compose.yml start -d
 
-    $ docker-compose -f docker-compose.yaml stop
+    $ docker-compose -f docker-compose.yml stop
 
 Let's add a document in the collection `my-collection` we created above in the database `my-db`.
 
@@ -628,11 +623,11 @@ We are building image as we don't have image for JS application using the `Docke
         depends_on:
           - "mongodb"
 
-Since we moved the `docker-compose.yaml` file to the clone repository, the `docker-compose` would now create container name differently.
+Since we moved the `docker-compose.yml` file to the clone repository, the `docker-compose` would now create container name differently.
 
 First stop all containers:
 
-    $ docker-compose -f docker-compose.yaml down
+    $ docker-compose -f docker-compose.yml down
 
 Check all containers:
 
@@ -640,7 +635,7 @@ Check all containers:
 
 In order to use the existing container, we can override the project name,
   
-    $ docker-compose --project-name project -f docker-compose.yaml up -d
+    $ docker-compose --project-name project -f docker-compose.yml up -d
 
 This wouldn't create new containers but re-use the same container created earlier.
 
@@ -681,7 +676,7 @@ To solve the problem, we can create `docker variables` as environment variables 
 
 To test the changes, first stop the containers:
 
-    $ docker-compose -f docker-compose.yaml -p project stop
+    $ docker-compose -f docker-compose.yml -p project stop
 
 In the terminal, we can define the environment variables like below:
 
@@ -691,7 +686,7 @@ In the terminal, we can define the environment variables like below:
 
 Now start the containers again
 
-    $ docker-compose -f docker-compose.yaml -p project start
+    $ docker-compose -f docker-compose.yml -p project start
 
 There is even a better way to use secrets in docker compose without having to use environment variables.
 
@@ -735,7 +730,7 @@ Now we can reference this in the configuration file like below:
 
 You can reference the `docker-compose.env` file like this:
 
-    $ docker-compose --env-file docker-compose.env -f docker-compose.yaml -d up
+    $ docker-compose --env-file docker-compose.env -f docker-compose.yml -d up
 
 There is another alternative to hide sensitive data i.e. `Docker Secrets`.
 
@@ -899,7 +894,7 @@ Once we have pushed the image, we can use it in the configuration file as below:
 
 ### Commands
 
-###### IMAGES :
+###### IMAGES:
 
 List all Local images
 
@@ -918,7 +913,7 @@ Build an image from a Dockerfile
     $ docker build -t <image_name>:<version> . //version is optional
     $ docker build -t <image_name>:<version> . -no-cache //build without cache
 
-###### CONTAINER :
+###### CONTAINER:
 
 List all Local containers (running & stopped)
 
@@ -962,7 +957,7 @@ Delete a container
 
     $ docker rm <container_name> (or <container_id)
 
-###### TROUBLESHOOT :
+###### TROUBLESHOOT:
 
 Fetch logs of a container
 
@@ -973,7 +968,7 @@ Open shell inside running container
     $ docker exec -it <container_name> /bin/bash
     $ docker exec -it <container_name> sh
 
-###### DOCKER HUB :
+###### Docker Hub:
 
 Pull an image from DockerHub
 
@@ -997,7 +992,7 @@ Search for an image on DockerHub
 
     $ docker search <image_name>
 
-###### VOLUMES :
+###### VOLUMES:
 
 List all Volumes
 
@@ -1035,7 +1030,7 @@ Remove unused local volumes
 
     $ docker volume prune //for anonymous volumes
 
-###### NETWORK :
+###### NETWORK:
 
 List all networks
 
