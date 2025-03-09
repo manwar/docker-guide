@@ -11,9 +11,9 @@
 ### Development process using containers
 
   - Own isolated environment
-  - Start service as a Docker container using command e.g. docker run postgres
-  - The command is same for all OS
-  - Same command for all services e.g. docker run redis
+  - Start service as a Docker container using command e.g. `docker run postgres`
+  - The command is same for all operating systems
+  - Same command for all services e.g. `docker run redis`
 
 Docker standardizes process of running any service on any local dev environment.
 
