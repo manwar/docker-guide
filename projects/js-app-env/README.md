@@ -1,145 +1,10 @@
-In this project, we are creating three containers: `js-app`, `mongodb` and `mongo-express`.
+In this project, we are using the same [**JS application**](https://github.com/manwar/docker-guide/tree/master/projects/js-app/app) from previous example.
 
-The `JS app` is borrowed from [**here**](https://gitlab.com/twn-youtube/docker-compose-crash-course).
+We also copied the [**Dockerfile**](https://github.com/manwar/docker-guide/blob/master/projects/js-app/Dockerfile) from previous example.
 
-We create folder `app` first in the root folder.
+In fact, we copied the [**docker-compose.yml**](https://github.com/manwar/docker-guide/blob/master/projects/js-app/docker-compose.yml) as well but removed the hardcoded user name and password.
 
-Inside the `app` folder, we create `index.html` as below:
-
-    <html lang="en">
-    <style>
-        .container {
-          margin: 40px auto;
-          width: 80%;
-        }
-
-        hr {
-          width: 400px;
-          margin-left: 0;
-        }
-        h3 {
-          display: inline-block;
-        }
-        #static {
-          color: red;
-        }
-        #dynamic {
-          color: green;
-        }
-    </style>
-    <script>
-        (async function init() {
-            const cont = document.getElementById('container');
-            const response = await fetch('http://localhost:3000/fetch-data', {
-              method: "GET",
-                headers: {
-                  'Accept': 'application/json',
-                  'Content-Type': 'application/json'
-                }
-            });
-            const jsonResponse = await response.json();
-            document.getElementById('dynamic').textContent = jsonResponse.data;
-        })();
-    </script>
-    <body>
-        <div class='container' id='container'>
-          <h1>Welcome to this Super Sophisticated App</h1>
-          <span>Some static data:  </span><h3 id="static">this is hard-coded in index.html</h3>
-          <hr />
-          <span>Data from MongoDB:  </span><h3 id="dynamic"></h3>
-          <hr />
-        </div>
-    </body>
-  </html>
-
-Then we create `server.js` inside the `app` folder as below:
-
-    let express = require('express');
-    let path = require('path');
-    let fs = require('fs');
-    let MongoClient = require('mongodb').MongoClient;
-    let bodyParser = require('body-parser');
-    let app = express();
-
-    const DB_USER = process.env.MONGO_DB_USERNAME
-    const DB_PASS = process.env.MONGO_DB_PWD
-
-    app.use(bodyParser.urlencoded({
-      extended: true
-    }));
-    app.use(bodyParser.json());
-
-    app.get('/', function (req, res) {
-      res.sendFile(path.join(__dirname, "index.html"));
-    });
-
-    // when starting app locally, use "mongodb://admin:password@localhost:27017" URL instead
-    let mongoUrlDockerCompose = `mongodb://${DB_USER}:${DB_PASS}@mongodb`;
-
-    // pass these options to mongo client connect request to avoid DeprecationWarning 
-    // for current Server Discovery and Monitoring engine
-    let mongoClientOptions = { useNewUrlParser: true, useUnifiedTopology: true };
-
-    // the following db and collection will be created on first connect
-    let databaseName = "my-db";
-    let collectionName = "my-collection";
-
-    app.get('/fetch-data', function (req, res) {
-      let response = {};
-      MongoClient.connect(mongoUrlDockerCompose, mongoClientOptions, function (err, client) {
-        if (err) throw err;
-
-        let db = client.db(databaseName);
-
-        let myquery = { myid: 1 };
-
-        db.collection(collectionName).findOne(myquery, function (err, result) {
-          if (err) throw err;
-          response = result;
-          client.close();
-
-          // Send response
-          res.send(response ? response : {});
-        });
-      });
-    });
-
-    app.listen(3000, function () {
-      console.log("app listening on port 3000!");
-    });
-
-Finally `package.json` in the same folder `app`.
-
-    {
-      "name": "developing-with-docker",
-      "version": "1.0.0",
-      "description": "",
-      "main": "server.js",
-      "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1",
-        "start": "node server.js"
-      },
-      "author": "Nana Janashia",
-      "license": "ISC",
-      "dependencies": {
-        "body-parser": "^1.20.2",
-        "express": "^4.18.2",
-        "mongodb": "^4.16.0"
-      }
-    }
-
-Now we have `JS` application defined.
-
-Let's create `Dockerfile` now:
-
-    FROM node:20-alpine
-    RUN mkdir -p /home/app
-    COPY ./app /home/app
-    WORKDIR /home/app
-    RUN npm install
-    CMD ["node", "server.js"]
-
-Finally, we need configuration file for `docker-compose.yml`.
+Here we are using docker variables: `${MONGO_ADMIN_USER}` and `${MONGO_ADMIN_PASS}` instead as shown below:
 
     version: '3.8'
     services:
@@ -148,31 +13,40 @@ Finally, we need configuration file for `docker-compose.yml`.
         ports:
           - 3000:3000
         environment:
-          - MONGO_DB_USERNAME=admin
-          - MONGO_DB_PWD=supersecret
+          - MONGO_DB_USERNAME=${MONGO_ADMIN_USER}
+          - MONGO_DB_PWD=${MONGO_ADMIN_PASS}
 
       mongodb:
         image: mongo
         ports:
           - 27017:27017
         environment:
-          - MONGO_INITDB_ROOT_USERNAME=admin
-          - MONGO_INITDB_ROOT_PASSWORD=supersecret
+          - MONGO_INITDB_ROOT_USERNAME=${MONGO_ADMIN_USER}
+          - MONGO_INITDB_ROOT_PASSWORD=${MONGO_ADMIN_USER}
 
       mongo-express:
         image: mongo-express
         ports:
           - 8081:8081
         environment:
-          - ME_CONFIG_MONGODB_ADMINUSERNAME=admin
-          - ME_CONFIG_MONGODB_ADMINPASSWORD=supersecret
+          - ME_CONFIG_MONGODB_ADMINUSERNAME=${MONGO_ADMIN_USER}
+          - ME_CONFIG_MONGODB_ADMINPASSWORD=${MONGO_ADMIN_USER}
           - ME_CONFIG_MONGODB_SERVER=mongodb
         depends_on:
           - "mongodb"
 
-Start the container:
+We can define the environment variables in two ways:
+
+    $ export MONGO_ADMIN_USER=admin
+    $ export MONGO_ADMIN_PASS=supersecret
+
+Then start up the containers like this:
 
     $ docker-compose up -d
+
+or just do this in one line:
+
+    $ MONGO_ADMIN_USER=admin MONGO_ADMIN_PASS=supersecret docker-compose up -d
 
 List the containers:
 
@@ -181,6 +55,8 @@ List the containers:
     8baed9b60f9f   mongo-express   "/sbin/tini -- /dock…"   23 minutes ago      Up 23 minutes      0.0.0.0:8081->8081/tcp, [::]:8081->8081/tcp       js-app_mongo-express_1
     c3b3c03f718a   mongo           "docker-entrypoint.s…"   23 minutes ago      Up 23 minutes      0.0.0.0:27017->27017/tcp, [::]:27017->27017/tcp   js-app_mongodb_1
     11c1b89ba789   js-app_js-app   "docker-entrypoint.s…"   23 minutes ago      Up 23 minutes      0.0.0.0:3000->3000/tcp, [::]:3000->3000/tcp       js-app_js-app_1    
+
+Access the Mongo Express: `http://localhost:8081` using default credentials `admin/pass`.
 
 Access the JS application: `http://localhost:3000`
 
@@ -196,4 +72,4 @@ Finally we add new document in the collection `my-collection`:
        "data": "some dynamic data loaded from DB"
     }
 
-Refresh the `JS` application, you should see the new document listed there.    
+Refresh the `JS` application, you should see the new document listed there.
