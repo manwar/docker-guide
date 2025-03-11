@@ -20,8 +20,9 @@
 9. [Container Port vs Host Port](#container-port-vs-host-port)
 10. [Registry vs Repository](#registry-vs-repository)
 11. [Create Docker Image](#create-docker-image)
-12. [Docker Compose](#docker-compose)
-13. [Docker Volume](#docker-volume)
+12. [Dockerfile](#dockerfile)
+13. [Docker Compose](#docker-compose)
+14. [Docker Volume](#docker-volume)
     1. [Persistence](#persistence)
     2. [Sharing](#sharing)
     3. [Decoupling](#decoupling)
@@ -30,7 +31,7 @@
     6. [Cross-Platform Compatibility](#cross-platform-compatibility)
     7. [Management](#management)
     8. [Security](#security)
-14. [Usefull Commands](#usefull-commands)
+15. [Usefull Commands](#usefull-commands)
     1. [Image](#image)
     2. [Container](#container)
     3. [Troubleshoot](#troubleshoot)
@@ -38,7 +39,7 @@
     5. [Volume](#volume)
     6. [Network](#network)
     7. [Docker History](#docker-history)
-15. [Resources](#resources)    
+16. [Resources](#resources)    
 
 ***   
 
@@ -381,6 +382,65 @@ It is also a collection of repositories.
 `Docker Hub` is a registry.
 
 On `Docker Hub`, you can have private or public repositories for your application.
+
+***
+
+## Dockerfile
+
+Important points about `RUN` instruction:
+
+    - It runs during the docker build phase
+    - Results are saved as layers in the image
+    - It cannot be overridden at runtime
+    - Multiple RUN commands can be used
+
+Important points about `CMD` instruction:
+
+    - It runs during the docker run phase
+    - It can be overridden by providing a command in docker run
+    - Only the last CMD in the Dockerfile is effective.
+
+The `WORKDIR` instruction sets the working directory for any subsequent instructions in the Dockerfile e.g. `RUN`, `COPY`, `CMD` etc.
+
+If the directory does not exist, it will be created automatically.
+
+The `COPY` instruction copies files or directories from the host machine into the Docker image.
+
+`ENTRYPOINT` is similar to `CMD` but is less easily overridden. 
+
+`ENTRYPOINT` is often used to define the main executable for the container, while `CMD` provides default arguments.
+
+If both `ENTRYPOINT` and `CMD` are specified, `CMD` arguments are appended to the `ENTRYPOINT` command.
+
+Let's create a script `greet.py` as below:
+
+    $ cat greet.py
+    import sys
+
+    name = sys.argv[1] if len(sys.argv) > 1 else "World"
+    print(f"Hello, {name}!")
+
+We will now create `Dockerfile` as below:
+
+    $ cat Dockerfile
+    FROM python:3.9-slim
+    WORKDIR /app
+    COPY greet.py .
+    ENTRYPOINT ["python", "greet.py"]
+    CMD ["World"]
+
+Now build and run the container.
+
+    $ docker build -t greet-app .
+    $ docker run greet-app
+    Hello, World!
+    $ docker run greet-app Alice
+    Hello, Alice!
+
+Overriding both `ENTRYPOINT` and `CMD` instructions.
+
+    $ docker run greet-app echo "Overriding both ENTRYPOINT and CMD"
+    Overriding both ENTRYPOINT and CMD
 
 ***
 
