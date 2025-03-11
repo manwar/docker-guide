@@ -1123,15 +1123,17 @@ Now, we will run a `nginx` container and mount the volume to a directory inside 
 
 For example, let's mount the volume to `/usr/share/nginx/html`, which is the default directory where Nginx serves files.
 
-    $ docker run -d --name my_nginx -v my_volume:/usr/share/nginx/html nginx
+    $ docker run -d --name my_nginx -p 8080:80 -v my_volume:/usr/share/nginx/html nginx
 
 Let's add a file to the volume by copying them into the container's mounted directory.
 
-    $ docker exec -it my_nginx bash -c "echo 'Welcome to Docker Volume!!' > /usr/share/nginx/html/index.html"
+    $ docker exec -it my_nginx bash
+    root@<container-id>:/# echo 'Welcome to Docker Volume!!' > /usr/share/nginx/html/index.html
+    root@<container-id>:/# exit
 
 Verify the data:
 
-    $ curl http://localhost
+    $ curl http://localhost:8080
 
 You should see the following output in the terminal:
 
@@ -1144,11 +1146,11 @@ Time for real action, we will now stop and remove the container and see if the d
 
 We will now re-use the same volume in a new container, and the data should still be there.
 
-    $ docker run -d --name my_nginx_new -v my_volume:/usr/share/nginx/html nginx
+    $ docker run -d --name my_nginx_new -p 8080:80 -v my_volume:/usr/share/nginx/html nginx
 
 Verify the data again in the new container:
 
-    $ curl http://localhost
+    $ curl http://localhost:8080
 
 You should see the following output in the terminal:
 
@@ -1326,6 +1328,12 @@ Remove all unused networks
 
     $ docker history test 
     $ docker history test --no-trunk
+
+**NOTE:**
+
+In case, a container gets re-created on removal, then try this:
+
+    $ docker swarm leave --force
 
 ***
 
