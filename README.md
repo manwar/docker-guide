@@ -21,7 +21,16 @@
 10. [Registry vs Repository](#registry-vs-repository)
 11. [Create Docker Image](#create-docker-image)
 12. [Docker Compose](#docker-compose)
-13. [Usefull Commands](#usefull-commands)
+13. [Docker Volume](#docker-volume)
+    1. [Persistence](#persistence)
+    2. [Sharing](#sharing)
+    3. [Decoupling](#decoupling)
+    4. [Backup](#backup)
+    5. [Performance](#performance)
+    6. [Cross-Platform Compatibility](#cross-platform-compatibility)
+    7. [Management](#management)
+    8. [Security](#security)
+14. [Usefull Commands](#usefull-commands)
     1. [Image](#image)
     2. [Container](#container)
     3. [Troubleshoot](#troubleshoot)
@@ -29,7 +38,7 @@
     5. [Volume](#volume)
     6. [Network](#network)
     7. [Docker History](#docker-history)
-14. [Resources](#resources)    
+15. [Resources](#resources)    
 
 ***   
 
@@ -939,6 +948,113 @@ Once we have pushed the image, we can use it in the configuration file as below:
           - ME_CONFIG_MONGODB_SERVER=mongodb
         depends_on:
           - "mongodb"
+
+***
+
+## Docker Volume
+
+The main use of `Docker Volume` is to persist and share data between containers and the host system or between multiple containers. 
+
+It is a very useful in Docker for managing data, independent of the container's lifecycle.
+
+Below is the main uses:
+
+### Persistence
+
+Containers are ephemeral by nature, meaning any data stored inside a container is lost when the container is removed or restarted.
+
+Volumes allow you to store data outside the container's filesystem, ensuring that the data persists even if the container is deleted or recreated.
+
+Example: Storing database files (e.g., MySQL, PostgreSQL) in a volume so that the data remains intact even if the database container is replaced.
+
+### Sharing
+
+Volumes can be shared among multiple containers, enabling data to be accessed and modified by different services.
+
+Example: A web application container and a logging container sharing the same volume to access log files.
+
+### Decoupling
+
+Volumes decouple data from the container, making it easier to update or replace containers without affecting the data.
+
+This separation of concerns improves flexibility and maintainability.
+
+Example: Upgrading a database container without losing the existing data.
+
+### Backup
+
+Volumes make it easy to back up and restore data because they are stored separately from the container.
+
+Example: Backing up a database volume to an external storage system.
+
+### Performance
+
+Volumes are often more performant than bind mounts (which directly map host directories) because they are managed by Docker and optimized for containerized workloads.
+
+They are particularly useful for I/O-intensive applications like databases.
+
+### Cross-Platform Compatibility
+
+Volumes work seamlessly across different environments (e.g., development, testing, production) and platforms (e.g., Linux, Windows).
+
+### Management
+
+Docker provides commands to manage volumes e.g. `docker volume create`, `docker volume ls`, `docker volume rm`), making it easy to create, inspect, and delete volumes.
+
+It can also be managed using `Docker Compose` for multi-container applications.
+
+### Security
+
+Volumes can be used to isolate sensitive data (e.g., configuration files, certificates) from the container's filesystem.
+
+This adds an extra layer of security by limiting access to the data.
+
+Example: Storing SSL certificates in a volume and mounting them into a web server container.
+
+Time for some action now:
+
+First we create a docker volume:
+
+    $ docker volume create my_volume
+
+Now, we will run a `nginx` container and mount the volume to a directory inside the container. 
+
+For example, let's mount the volume to `/usr/share/nginx/html`, which is the default directory where Nginx serves files.
+
+    $ docker run -d --name my_nginx -v my_volume:/usr/share/nginx/html nginx
+
+Let's add a file to the volume by copying them into the container's mounted directory.
+
+    $ docker exec -it my_nginx bash -c "echo 'Welcome to Docker Volume!!' > /usr/share/nginx/html/index.html"
+
+Verify the data:
+
+    $ curl http://localhost
+
+You should see the following output in the terminal:
+
+    Welcome to Docker Volume!!
+
+Time for real action, we will now stop and remove the container and see if the data is still safe.
+
+    $ docker stop my_nginx
+    $ docker rm my_nginx
+
+We will now re-use the same volume in a new container, and the data should still be there.
+
+    $ docker run -d --name my_nginx_new -v my_volume:/usr/share/nginx/html nginx
+
+Verify the data again in the new container:
+
+    $ curl http://localhost
+
+You should see the following output in the terminal:
+
+    Welcome to Docker Volume!!
+
+When you don't need the data, you can remove the volume:
+
+    $ docker volume rm my_volume
 
 ***
 
