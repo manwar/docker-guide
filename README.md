@@ -439,7 +439,7 @@ Now build and run the container.
 
 Overriding both `ENTRYPOINT` and `CMD` instructions.
 
-    $ docker run greet-app echo "Overriding both ENTRYPOINT and CMD"
+    $ docker run --entrypoint echo greet-app "Overriding both ENTRYPOINT and CMD"
     Overriding both ENTRYPOINT and CMD
 
 ***
