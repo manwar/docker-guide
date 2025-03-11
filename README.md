@@ -993,6 +993,46 @@ Volumes are often more performant than bind mounts (which directly map host dire
 
 They are particularly useful for I/O-intensive applications like databases.
 
+##### What is bind mount?
+
+    Bind mount directly map a directory or file from the host machine into the container.
+    The host directory is referenced by its absolute path and the container has direct access to it.
+
+Below is how you bind mount:
+
+    $ docker run -v /host/path:/container/path my_image
+
+Let's see how this work, we would create a folder `my-content`.
+
+In the folder `my-content`, we would then create a page `index.html` as below:
+
+    $ mkdir ~/my-content
+    $ echo "<h1>Hello from Bind Mount!!</h1>" > ~/my-content/index.html
+
+Now start the `nginx` container with bind mount:
+
+    $ docker run -d --name my_nginx -v ~/my-content:/usr/share/nginx/html -p 8080:80 nginx
+
+Access the webserver:
+
+    $ curl http://localhost:8080
+
+You should see the below output in the console:
+
+    Hello from Bind Mount!!
+
+Let's update the `index.html` in the host machine.
+
+    $ echo "<h1>Hello again from Bind Mount!!</h1>" > ~/my-content/index.html
+
+Access the webserver now:
+
+    $ curl http://localhost:8080
+
+You should see the below output in the console:
+
+    Hello again from Bind Mount!!
+
 ### Cross-Platform Compatibility
 
 Volumes work seamlessly across different environments e.g. `development`, `testing`, `production` and platforms e.g. `Linux`, `Windows`.
