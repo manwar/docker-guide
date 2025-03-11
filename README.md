@@ -387,6 +387,12 @@ On `Docker Hub`, you can have private or public repositories for your applicatio
 
 ## Dockerfile
 
+The `WORKDIR` instruction sets the working directory for any subsequent instructions in the Dockerfile e.g. `RUN`, `COPY`, `CMD` etc.
+
+If the directory does not exist, it will be created automatically.
+
+The `COPY` instruction copies files or directories from the host machine into the Docker image.
+
 Important points about `RUN` instruction:
 
     - It runs during the docker build phase
@@ -399,12 +405,6 @@ Important points about `CMD` instruction:
     - It runs during the docker run phase
     - It can be overridden by providing a command in docker run
     - Only the last CMD in the Dockerfile is effective.
-
-The `WORKDIR` instruction sets the working directory for any subsequent instructions in the Dockerfile e.g. `RUN`, `COPY`, `CMD` etc.
-
-If the directory does not exist, it will be created automatically.
-
-The `COPY` instruction copies files or directories from the host machine into the Docker image.
 
 `ENTRYPOINT` is similar to `CMD` but is less easily overridden. 
 
@@ -423,7 +423,7 @@ Let's create a script `greet.py` as below:
 We will now create `Dockerfile` as below:
 
     $ cat Dockerfile
-    FROM python:3.9-slim
+    FROM python:3.14-rc-bookworm
     WORKDIR /app
     COPY greet.py .
     ENTRYPOINT ["python", "greet.py"]
@@ -456,16 +456,10 @@ We would create `app.py`
 
 Now we create another file `Dockerfile` as below:
 
-    # Use an official Python runtime as a parent image
+    $ cat Dockerfile
     FROM python:3.14-rc-bookworm
-
-    # Set the working directory in the container
     WORKDIR /app
-
-    # Copy the current directory contents into the container at /app
     COPY app.py /app
-
-    # Run app.py when the container launches
     CMD ["python", "app.py"]
 
 Build the image:
