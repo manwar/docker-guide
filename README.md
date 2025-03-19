@@ -851,7 +851,7 @@ The docker secrets works in `swarm mode`.
 
 Check the status, you should `Swarm: active`
 
-    $ docker info    
+    $ docker info | grep Swarm
 
 There are 2 ways to create secrets: `using file` and `using CLI`
 
